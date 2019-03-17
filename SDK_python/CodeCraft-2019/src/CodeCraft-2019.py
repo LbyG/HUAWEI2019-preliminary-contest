@@ -12,9 +12,10 @@ logging.basicConfig(level=logging.DEBUG,
                     datefmt='%Y-%m-%d %H:%M:%S',
                     filemode='a')
 
-path_random_choose_index = 1
+path_random_choose_index = 0
 max_running_car_num = 500
 CAR_RUNNING_TIME_LENGTH = 2000
+CAPACITY_WEIGHT = 1.0
 
 def read_car_file(car_path):
 # deal car info
@@ -36,6 +37,7 @@ def read_car_file(car_path):
             car = {}
             for i in range(len(car_attr)):
                 car[car_attr[i]] = info[i]
+            car["isOnTheRoad"] = -1
             cars.append(car)
     cars.sort(key = lambda x:x["planTime"])
     return cars, car_attr
@@ -85,7 +87,7 @@ def read_road_file(road_path, crosses):
             road = {}
             for i in range(len(road_attr)):
                 road[road_attr[i]] = info[i]
-            capacity = road["channel"] * (1 + max(0, road["length"] - 2 * road["speed"]))
+            capacity = road["channel"] * max(1, road["length"] - road["speed"]) * CAPACITY_WEIGHT
             road["capacity"] = capacity
             roads[road["id"]] = road
             road_reverse = road.copy()
@@ -272,23 +274,24 @@ def traffic_regulation(cars, crosses, roads, cross_with_to_road, cross_with_from
         road_car_situation[cross_id] = {}
         for road in cross_with_from_road[cross_id]:
             road_car_situation[cross_id][road["id"]] = np.zeros(CAR_RUNNING_TIME_LENGTH)
-    for car in cars:
-        start_time = max(start_time, car["planTime"])
-        while True:
-            #print(car["id"])
+    wait_car_N = len(cars)
+    start_time = 1
+    while wait_car_N > 0:
+        max_run_time = 0
+        for car in cars:
+            if car["isOnTheRoad"] != -1 or start_time < car["planTime"]:
+                continue
             path_cross_id, path_road_id, path_road_through_time = random_find_path_by_dis(car, start_time, roads, cross_with_to_road, cross_with_from_road, road_car_situation)
             if path_cross_id[-1] == -1:
-                start_time += 1
                 continue
-            break
-        update_road_car_situation(road_car_situation, start_time, path_cross_id, path_road_id, path_road_through_time)
-        ans.append({"carId":car["id"], "startTime":start_time, "path":path_road_id})
-        end_time = start_time + path_road_through_time[-1]
-        heapq.heappush(heap, end_time)
-        count += 1
-        if count >= max_running_car_num:
-            count -= 1
-            start_time = heapq.heappop(heap)
+            update_road_car_situation(road_car_situation, start_time, path_cross_id, path_road_id, path_road_through_time)
+            ans.append({"carId":car["id"], "startTime":start_time, "path":path_road_id})
+            max_run_time = max(max_run_time, path_road_through_time[-1])
+            car["isOnTheRoad"] = start_time
+            wait_car_N -= 1
+        start_time += 10
+        print("start time = ", start_time, "wait car N = ", wait_car_N, "max_run_time = ", max_run_time)
+        
     for road_id in road_car_situation[20]:
         road = roads[road_id]
 #        print("road = ", road)
