@@ -196,10 +196,10 @@ def random_find_path_by_dis(car, cross_with_to_road, cross_with_from_road):
         for optional_road in optional_road_list:
             optional_road["prob"] /= prob_sum
             cross_arrive_state[cross_id]["time"] += optional_road["prob"] * optional_road["expectTime"]
+        # according a probability random choose next cross
         random_val = random.random()
         random_val -= 0.0000001
         for optional_road in optional_road_list:
-            #print("optional_road = ", optional_road)
             random_val -= optional_road["prob"]
             if random_val < 0:
                 cross_arrive_state[cross_id]["crossFromId"] = optional_road["crossToId"]
