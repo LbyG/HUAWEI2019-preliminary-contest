@@ -4,6 +4,7 @@ import sys
 import math
 import heapq
 import random
+import numpy as np
 
 logging.basicConfig(level=logging.DEBUG,
                     filename='../logs/CodeCraft-2019.log',
@@ -12,7 +13,8 @@ logging.basicConfig(level=logging.DEBUG,
                     filemode='a')
 
 path_random_choose_index = 1
-max_running_car_num = 500
+max_running_car_num = 600
+CAR_RUNNING_TIME_LENGTH = 2000
 
 def read_car_file(car_path):
 # deal car info
@@ -208,29 +210,57 @@ def random_find_path_by_dis(car, cross_with_to_road, cross_with_from_road):
                 break
     
     run_time = cross_arrive_state[car_to_id]["time"]
-    path = []
+    path_cross_id = []
+    path_road_id = []
+    path_road_through_time = []
     cross_id = car_from_id
     while cross_id != car_to_id:
-        path.append(cross_arrive_state[cross_id]["roadFromId"])
+        path_cross_id.append(cross_id)
+        path_road_id.append(cross_arrive_state[cross_id]["roadFromId"])
         run_time += cross_arrive_state[cross_id]["through_time"]
+        path_road_through_time.append(run_time)
         cross_id = cross_arrive_state[cross_id]["crossFromId"]
-    return run_time, path
+    path_cross_id.append(cross_id)
+    return path_cross_id, path_road_id, path_road_through_time
+
+def update_road_car_situation(road_car_situation, car_start_time, path_cross_id, path_road_id, path_road_through_time):
+# according car path update road_car_situation
+    N = len(path_road_id)
+    road_start_time = car_start_time
+    for i in range(N):
+        road_end_time = car_start_time + path_road_through_time[i]
+        for time in range(road_start_time, road_end_time):
+            road_car_situation[path_cross_id[i]][path_road_id[i]][time] += 1
+        road_start_time = road_end_time
 
 def traffic_regulation(cars, crosses, roads, cross_with_to_road, cross_with_from_road):
+# road car situation road_car_situation["cross_id"]["road_id"] = np.zeros(CAR_RUNNING_TIME_LENGTH)
     ans = []
     start_time = 0
     count = 0
     heap = []
+    road_car_situation = {}
+    for cross_id in cross_with_from_road:
+        road_car_situation[cross_id] = {}
+        for road in cross_with_from_road[cross_id]:
+            road_car_situation[cross_id][road["id"]] = np.zeros(CAR_RUNNING_TIME_LENGTH)
     for car in cars:
         start_time = max(start_time, car["planTime"])
-        run_time, path = random_find_path_by_dis(car, cross_with_to_road, cross_with_from_road)
-        ans.append({"carId":car["id"], "startTime":start_time, "path":path})
-        end_time = start_time + run_time
+        path_cross_id, path_road_id, path_road_through_time = random_find_path_by_dis(car, cross_with_to_road, cross_with_from_road)
+        update_road_car_situation(road_car_situation, start_time, path_cross_id, path_road_id, path_road_through_time)
+        ans.append({"carId":car["id"], "startTime":start_time, "path":path_road_id})
+        end_time = start_time + path_road_through_time[-1]
         heapq.heappush(heap, end_time)
         count += 1
         if count >= max_running_car_num:
             count -= 1
             start_time = heapq.heappop(heap)
+    for road_id in road_car_situation[20]:
+        road = roads[road_id]
+        print("road = ", road)
+        print("road_situation = ", np.max(road_car_situation[20][road_id]))
+        capacity = road["channel"] * (1 + max(0, road["length"] - 2 * road["speed"]))
+        print("road_capacity = ", capacity)
     return ans
 
 def write_ans(ans, answer_path):
