@@ -12,10 +12,14 @@ logging.basicConfig(level=logging.DEBUG,
                     datefmt='%Y-%m-%d %H:%M:%S',
                     filemode='a')
 
+# set random seed
+random.seed(2050)
+np.random.seed(2050)
+
 path_random_choose_index = 0
 max_running_car_num = 500
 CAR_RUNNING_TIME_LENGTH = 2000
-CAPACITY_WEIGHT = 0.6
+CAPACITY_WEIGHT = 0.8
 
 def read_car_file(car_path):
 # deal car info
@@ -242,7 +246,7 @@ def dfs_random_find_path_by_dis(car, cross_id, cross_arrive_time, path_cross_id,
         prob_sum = 0
         for optional_road in cross_with_optional_road[cross_id]:
             remain_capacity = roads[optional_road["roadToId"]]["capacity"] - np.max(road_car_situation[cross_id][optional_road["roadToId"]][cross_arrive_time:cross_arrive_time+optional_road["throughTime"]])
-            prob_sum += optional_road["prob"] * (remain_capacity / remain_capacity_sum)
+            prob_sum += (optional_road["prob"] * optional_road["probState"]) * (remain_capacity / remain_capacity_sum)
             #print(optional_road["prob"], remain_capacity, remain_capacity_sum)
             #print("optional_road[prob] = ",optional_road["prob"])
         #print(count, prob_sum)
@@ -262,7 +266,7 @@ def dfs_random_find_path_by_dis(car, cross_id, cross_arrive_time, path_cross_id,
         #print("random_val = ", random_val)
         for optional_road in cross_with_optional_road[cross_id]:
             remain_capacity = roads[optional_road["roadToId"]]["capacity"] - np.max(road_car_situation[cross_id][optional_road["roadToId"]][cross_arrive_time:cross_arrive_time+optional_road["throughTime"]])
-            random_val -= (optional_road["prob"] * (remain_capacity / remain_capacity_sum)) / prob_sum
+            random_val -= ((optional_road["prob"] * optional_road["probState"]) * (remain_capacity / remain_capacity_sum)) / prob_sum
             #print(optional_road["prob"], remain_capacity, remain_capacity_sum, prob_sum)
             #print("random_val = ", random_val, "raod_ratio", (optional_road["prob"] * (remain_capacity / remain_capacity_sum)) / prob_sum)
             if random_val < 0:
@@ -275,7 +279,7 @@ def dfs_random_find_path_by_dis(car, cross_id, cross_arrive_time, path_cross_id,
                 if ifFindPath:
                     return True
                 else:
-                    optional_road["prob"] = 0
+                    optional_road["probState"] = 0
                 break
         
 
@@ -300,10 +304,20 @@ def traffic_regulation(cars, crosses, roads, cross_with_to_road, cross_with_from
         road_car_situation[cross_id] = {}
         for road in cross_with_from_road[cross_id]:
             road_car_situation[cross_id][road["id"]] = np.zeros(CAR_RUNNING_TIME_LENGTH)
+    car_arrive_cross_list, car_cross_arrive_state, car_cross_with_optional_road = {}, {}, {}
+    for car in cars:
+        arrive_cross_list, cross_arrive_state = get_near_cross_sequence(car, cross_with_to_road)
+        cross_with_optional_road = calc_expect_run_time_and_prob(arrive_cross_list, cross_arrive_state, cross_with_from_road, car["speed"])
+        car_arrive_cross_list[car["id"]] = arrive_cross_list
+        car_cross_arrive_state[car["id"]] = cross_arrive_state
+        car_cross_with_optional_road[car["id"]] = cross_with_optional_road
+    
+    cars.sort(key = lambda x:-car_cross_arrive_state[x["id"]][x["from"]]["time"])
+    
     wait_car_N = len(cars)
     start_time = 1
     while wait_car_N > 0:
-        random.shuffle(cars)
+        #random.shuffle(cars)
         congestion_statistics = {}
         max_run_time = 0
         for car in cars:
@@ -311,8 +325,11 @@ def traffic_regulation(cars, crosses, roads, cross_with_to_road, cross_with_from
                 continue
             #print(car["id"])
             # get cross sequence
-            arrive_cross_list, cross_arrive_state = get_near_cross_sequence(car, cross_with_to_road)
-            cross_with_optional_road = calc_expect_run_time_and_prob(arrive_cross_list, cross_arrive_state, cross_with_from_road, car["speed"])
+            arrive_cross_list, cross_arrive_state = car_arrive_cross_list[car["id"]], car_cross_arrive_state[car["id"]]
+            cross_with_optional_road = car_cross_with_optional_road[car["id"]]
+            for cross_id in cross_with_optional_road:
+                for optional_road in cross_with_optional_road[cross_id]:
+                    optional_road["probState"] = 1
             # find path
             path_cross_id = []
             path_road_id = []
@@ -330,7 +347,7 @@ def traffic_regulation(cars, crosses, roads, cross_with_to_road, cross_with_from
         if start_time < 10 or wait_car_N < 500:
             start_time += 1
         else:
-            start_time += 20
+            start_time += 5
         #for cross_id in congestion_statistics:
         #    print(cross_id, ":", congestion_statistics[cross_id], ", ")
         #print("\n")
