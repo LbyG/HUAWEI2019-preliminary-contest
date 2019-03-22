@@ -177,6 +177,87 @@ car.cpp.s:
 	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/car.cpp.s
 .PHONY : car.cpp.s
 
+cmp_car_id.o: cmp_car_id.cpp.o
+
+.PHONY : cmp_car_id.o
+
+# target to build an object file
+cmp_car_id.cpp.o:
+	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/cmp_car_id.cpp.o
+.PHONY : cmp_car_id.cpp.o
+
+cmp_car_id.i: cmp_car_id.cpp.i
+
+.PHONY : cmp_car_id.i
+
+# target to preprocess a source file
+cmp_car_id.cpp.i:
+	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/cmp_car_id.cpp.i
+.PHONY : cmp_car_id.cpp.i
+
+cmp_car_id.s: cmp_car_id.cpp.s
+
+.PHONY : cmp_car_id.s
+
+# target to generate assembly for a file
+cmp_car_id.cpp.s:
+	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/cmp_car_id.cpp.s
+.PHONY : cmp_car_id.cpp.s
+
+cmp_car_plan_time.o: cmp_car_plan_time.cpp.o
+
+.PHONY : cmp_car_plan_time.o
+
+# target to build an object file
+cmp_car_plan_time.cpp.o:
+	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/cmp_car_plan_time.cpp.o
+.PHONY : cmp_car_plan_time.cpp.o
+
+cmp_car_plan_time.i: cmp_car_plan_time.cpp.i
+
+.PHONY : cmp_car_plan_time.i
+
+# target to preprocess a source file
+cmp_car_plan_time.cpp.i:
+	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/cmp_car_plan_time.cpp.i
+.PHONY : cmp_car_plan_time.cpp.i
+
+cmp_car_plan_time.s: cmp_car_plan_time.cpp.s
+
+.PHONY : cmp_car_plan_time.s
+
+# target to generate assembly for a file
+cmp_car_plan_time.cpp.s:
+	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/cmp_car_plan_time.cpp.s
+.PHONY : cmp_car_plan_time.cpp.s
+
+overall_schedule.o: overall_schedule.cpp.o
+
+.PHONY : overall_schedule.o
+
+# target to build an object file
+overall_schedule.cpp.o:
+	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/overall_schedule.cpp.o
+.PHONY : overall_schedule.cpp.o
+
+overall_schedule.i: overall_schedule.cpp.i
+
+.PHONY : overall_schedule.i
+
+# target to preprocess a source file
+overall_schedule.cpp.i:
+	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/overall_schedule.cpp.i
+.PHONY : overall_schedule.cpp.i
+
+overall_schedule.s: overall_schedule.cpp.s
+
+.PHONY : overall_schedule.s
+
+# target to generate assembly for a file
+overall_schedule.cpp.s:
+	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/overall_schedule.cpp.s
+.PHONY : overall_schedule.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -192,6 +273,15 @@ help:
 	@echo "... car.o"
 	@echo "... car.i"
 	@echo "... car.s"
+	@echo "... cmp_car_id.o"
+	@echo "... cmp_car_id.i"
+	@echo "... cmp_car_id.s"
+	@echo "... cmp_car_plan_time.o"
+	@echo "... cmp_car_plan_time.i"
+	@echo "... cmp_car_plan_time.s"
+	@echo "... overall_schedule.o"
+	@echo "... overall_schedule.i"
+	@echo "... overall_schedule.s"
 .PHONY : help
 
 
