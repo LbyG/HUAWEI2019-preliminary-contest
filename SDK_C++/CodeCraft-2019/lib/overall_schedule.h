@@ -33,7 +33,7 @@ public:
     void clear_priority_queue(priority_queue<car, vector<car>, cmp_car_id> &pq);
     
     //load cars, roads and crosses info from car_path, road_path and cross_path file
-    void load_cars_road_cross(string car_path, string road_path, string cross_path);
+    void load_cars_roads_crosses(string car_path, string road_path, string cross_path);
     // load cars' path from answer_path
     void load_answer(string answer_path);
     // Initial all running cars schedule status, car.schedule_status = 0

@@ -25,7 +25,7 @@ void overall_schedule::clear_priority_queue(priority_queue<car, vector<car>, cmp
 }
 
 //load cars, roads and crosses info from car_path, road_path and cross_path file
-void overall_schedule::load_cars_road_cross(string car_path, string road_path, string cross_path) {
+void overall_schedule::load_cars_roads_crosses(string car_path, string road_path, string cross_path) {
     // load cars information from car_path file
     this->cars.clear();
     ifstream cars_info_file(car_path);
