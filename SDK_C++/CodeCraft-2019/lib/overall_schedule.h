@@ -30,6 +30,7 @@ public:
     int get_cars_n();
     // function to clear priority queue
     void clear_priority_queue(priority_queue<car, vector<car>, cmp_car_plan_time> &pq);
+    void clear_priority_queue(priority_queue<car, vector<car>, cmp_car_id> &pq);
     
     //load cars, roads and crosses info from car_path, road_path and cross_path file
     void load_cars_road_cross(string car_path, string road_path, string cross_path);

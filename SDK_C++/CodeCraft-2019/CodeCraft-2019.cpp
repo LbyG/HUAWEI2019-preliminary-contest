@@ -31,6 +31,13 @@ int main(int argc, char *argv[])
     int T = OS.schedule_cars();
     std::cout << "T = " << T << std::endl;
 	// TODO:write output file
+    vector<int*> v;
+    int a = 1;
+    v.push_back(&a);
+    int *p_a = &a;
+    *p_a = 2;
+    cout << a << endl;
+    cout << *v[0] << endl;
 	
 	return 0;
 }

@@ -17,6 +17,10 @@ overall_schedule.h
 /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/car.cpp
 car.h
 /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/car.h
+vector
+-
+iostream
+-
 
 /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/cmp_car_id.cpp
 cmp_car_id.h
@@ -29,6 +33,16 @@ cmp_car_plan_time.h
 /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/cmp_car_plan_time.h
 car.h
 /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/car.h
+
+/home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/cross.cpp
+cross.h
+/home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/cross.h
+road.h
+/home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/road.h
+vector
+-
+iostream
+-
 
 /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/lib/car.h
 string
@@ -43,6 +57,12 @@ car.h
 /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/lib/car.h
 
 /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/lib/cross.h
+road.h
+/home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/lib/road.h
+map
+-
+vector
+-
 
 /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/lib/overall_schedule.h
 queue
@@ -63,10 +83,26 @@ cmp_car_id.h
 /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/lib/cmp_car_id.h
 
 /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/lib/road.h
+car.h
+/home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/lib/car.h
+vector
+-
+list
+-
 
 /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/overall_schedule.cpp
 overall_schedule.h
 /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/overall_schedule.h
+iostream
+-
+fstream
+-
+
+/home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/road.cpp
+road.h
+/home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/road.h
+vector
+-
 iostream
 -
 

@@ -14,6 +14,7 @@ private:
     int plan_time; // car plan start time
     int schedule_status; // schedule_status == 0 schedule wait; schedule_status == 1 cross wait; schedule_status == 2 end state;
 public:
+    car();
     car(string car_info); // car_info = (id,from,to,speed,planTime)
     int get_id() const; // return car id
     int get_from() const; // reutrn car start from cross_id;

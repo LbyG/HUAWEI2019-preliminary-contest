@@ -20,6 +20,11 @@ CMakeFiles/CodeCraft-2019.dir/cmp_car_plan_time.cpp.o: /home/lbyg/Kaggle/HUAWEI2
 CMakeFiles/CodeCraft-2019.dir/cmp_car_plan_time.cpp.o: /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/lib/car.h
 CMakeFiles/CodeCraft-2019.dir/cmp_car_plan_time.cpp.o: /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/lib/cmp_car_plan_time.h
 
+CMakeFiles/CodeCraft-2019.dir/cross.cpp.o: /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/cross.cpp
+CMakeFiles/CodeCraft-2019.dir/cross.cpp.o: /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/lib/car.h
+CMakeFiles/CodeCraft-2019.dir/cross.cpp.o: /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/lib/cross.h
+CMakeFiles/CodeCraft-2019.dir/cross.cpp.o: /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/lib/road.h
+
 CMakeFiles/CodeCraft-2019.dir/overall_schedule.cpp.o: /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/lib/car.h
 CMakeFiles/CodeCraft-2019.dir/overall_schedule.cpp.o: /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/lib/cmp_car_id.h
 CMakeFiles/CodeCraft-2019.dir/overall_schedule.cpp.o: /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/lib/cmp_car_plan_time.h
@@ -27,4 +32,8 @@ CMakeFiles/CodeCraft-2019.dir/overall_schedule.cpp.o: /home/lbyg/Kaggle/HUAWEI20
 CMakeFiles/CodeCraft-2019.dir/overall_schedule.cpp.o: /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/lib/overall_schedule.h
 CMakeFiles/CodeCraft-2019.dir/overall_schedule.cpp.o: /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/lib/road.h
 CMakeFiles/CodeCraft-2019.dir/overall_schedule.cpp.o: /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/overall_schedule.cpp
+
+CMakeFiles/CodeCraft-2019.dir/road.cpp.o: /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/lib/car.h
+CMakeFiles/CodeCraft-2019.dir/road.cpp.o: /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/lib/road.h
+CMakeFiles/CodeCraft-2019.dir/road.cpp.o: /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/road.cpp
 

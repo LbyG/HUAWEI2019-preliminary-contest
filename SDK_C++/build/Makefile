@@ -231,6 +231,33 @@ cmp_car_plan_time.cpp.s:
 	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/cmp_car_plan_time.cpp.s
 .PHONY : cmp_car_plan_time.cpp.s
 
+cross.o: cross.cpp.o
+
+.PHONY : cross.o
+
+# target to build an object file
+cross.cpp.o:
+	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/cross.cpp.o
+.PHONY : cross.cpp.o
+
+cross.i: cross.cpp.i
+
+.PHONY : cross.i
+
+# target to preprocess a source file
+cross.cpp.i:
+	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/cross.cpp.i
+.PHONY : cross.cpp.i
+
+cross.s: cross.cpp.s
+
+.PHONY : cross.s
+
+# target to generate assembly for a file
+cross.cpp.s:
+	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/cross.cpp.s
+.PHONY : cross.cpp.s
+
 overall_schedule.o: overall_schedule.cpp.o
 
 .PHONY : overall_schedule.o
@@ -258,6 +285,33 @@ overall_schedule.cpp.s:
 	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/overall_schedule.cpp.s
 .PHONY : overall_schedule.cpp.s
 
+road.o: road.cpp.o
+
+.PHONY : road.o
+
+# target to build an object file
+road.cpp.o:
+	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/road.cpp.o
+.PHONY : road.cpp.o
+
+road.i: road.cpp.i
+
+.PHONY : road.i
+
+# target to preprocess a source file
+road.cpp.i:
+	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/road.cpp.i
+.PHONY : road.cpp.i
+
+road.s: road.cpp.s
+
+.PHONY : road.s
+
+# target to generate assembly for a file
+road.cpp.s:
+	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/road.cpp.s
+.PHONY : road.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -279,9 +333,15 @@ help:
 	@echo "... cmp_car_plan_time.o"
 	@echo "... cmp_car_plan_time.i"
 	@echo "... cmp_car_plan_time.s"
+	@echo "... cross.o"
+	@echo "... cross.i"
+	@echo "... cross.s"
 	@echo "... overall_schedule.o"
 	@echo "... overall_schedule.i"
 	@echo "... overall_schedule.s"
+	@echo "... road.o"
+	@echo "... road.i"
+	@echo "... road.s"
 .PHONY : help
 
 
