@@ -2,9 +2,11 @@
 #define ROAD_H
 
 #include "car.h"
+#include "cmp_car_dis_to_cross_and_channel_id.h"
 
 #include <vector>
 #include <list>
+#include <queue>
 
 using namespace std;
 
@@ -19,21 +21,61 @@ private:
     // isDuplex == 1, road can from from_cross_id to to_cross_id
     // isDuplex == 1, road can from from_cross_id to to_cross_id and from to_cross_id to from_cross_id
     int is_duplex;
+    
+    // channel 0 to into_channel_id-1 can't into, initial value is 0 and into_channel_id < channel
+    int into_channel_id;
+    // size = 3, wait_into_road_direction_count[0] is straight, wait_into_road_direction_count[1] is left, wait_into_road_direction_count[2] is right
+    vector<int> wait_into_road_direction_count;
+    // dis_to_cross from small to large
+    // if dis_to_cross equal, channel_id from small to large
+    priority_queue<car, vector<car>, cmp_car_dis_to_cross_and_channel_id> wait_car_forefront_of_each_channel;
+    
     // situation of cars in road
     // cars_in_road[channel_id] = list(car1 -> car2 -> car3 -> ...)
     // channel_id = [0, channel-1]
     // list<car> = car1->car2->car3->car4, ... the distance from the arrive_cross_id is from near to far
     vector<list<car>> cars_in_road;
 public:
-    // road_info = (id,length,speed,channel,from,to,isDuplex)
     road();
+    // road_info = (id,length,speed,channel,from,to,isDuplex)
     road(string road_info);
     int get_id() const; // return road id
     int get_from() const; // return road from cross id
     int get_to() const; // return road to cross id
     int get_is_duplex() const; // return is_duplex
+    // swap from and to
+    void swap_from_to();
     // if through road can arrive cross_id, if cross_id == to || (cross_id == from && isDuplex == 1) return true else return false
     bool ifArriveCross(int cross_id);
+    
+    // set.into_channel_id = into_channel_id
+    void set_into_channel_id(int into_channel_id);
+    // road.wait_road_direction_count = [0, 0, 0]
+    void init_wait_into_road_direction_count();
+    // road.wait_car_forefront_of_each_channel.clear();
+    void clear_wait_car_forefront_of_each_channel();
+    
+    // if no car need through cross in this road
+    bool if_no_car_through_cross();
+    // get car which have priority through cross, wait_car_forefront_of_each_channel
+    car get_car_priority_through_cross();
+    
+    // wait_into_road_direction_count[car_direct] += 1
+    void add_wait_into_road_direction_count(int car_direct);
+    
+    // init cars' schedule state to wait state which in channel
+    // return number of cars in channel
+    int init_cars_schedule_status_in_channel(int channel_id);
+    // Schedule cars in road.
+    // If car can through cross then car into schedule wait -> car.schedule_status = 1
+    // If car blocked by schedule wait car then car into schedule wait -> car.schedule_status = 1
+    // If car don't be block and can't through cross then car run one time slice and into end state -> car.schedule_status = 0
+    // If car blocked by termination state car then car move to the back of the previous car -> car.schedule_status = 0
+    // return number of from wait state to termination status
+    int schedule_cars_running_in_channel(int channel_id);
+    int schedule_cars_running_in_road();
 };
+
+bool operator<(const road &a, const road &b);
 
 #endif

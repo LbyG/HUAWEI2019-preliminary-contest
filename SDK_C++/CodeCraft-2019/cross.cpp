@@ -1,9 +1,11 @@
 #include "cross.h"
 
 #include "road.h"
+#include "util.h"
 
 #include <vector>
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
@@ -19,29 +21,11 @@ cross::cross() {
 // ...
 cross::cross(string cross_info) {
     // road_info = (id,length,speed,channel,from,to,isDuplex)
-    int len = cross_info.size();
-    vector<int> info_val;
-    info_val.clear();
-    int previous_char_pos = -1;
-    int val = 0;
-    int flag = 1;
-    for (int i = 0; i < len; ++i) {
-        if (cross_info[i] < '0' || cross_info[i] > '9') {
-            if (i > (previous_char_pos + 1)) {
-                info_val.push_back(flag * val);
-                val = 0;
-                flag = 1;
-            }
-            if (cross_info[i] == '-')
-                flag = -1;
-            previous_char_pos = i;
-        } else {
-            val = val * 10 + (int(cross_info[i]) - int('0'));
-        }
-    }
+    vector<int> info_val = parse_string_to_int_vector(cross_info);
+    
     this->id = info_val[0];
-    this->road_into_cross.clear();
-    this->road_departure_cross.clear();
+    this->roads_into_cross.clear();
+    this->roads_departure_cross.clear();
     // generate turn direct
     this->turn_direct.clear();
     this->road_id_in_cross.clear();
@@ -69,10 +53,41 @@ int cross::get_turn_direct(int from_road_id, int to_road_id) {
 
 // add road* to road_into_cross which road->to = cross_id
 void cross::add_road_into_cross(road* road_pointer) {
-    this->road_into_cross.push_back(road_pointer);
+    this->roads_into_cross.push_back(road_pointer);
 }
 
 // add road* to road_departure_cross which road->from == cross_id
 void cross::add_road_departure_cross(int road_id, road* road_pointer) {
-    this->road_departure_cross[road_id] = road_pointer;
+    this->roads_departure_cross[road_id] = road_pointer;
+}
+
+// update road state in cross
+// if for a road have 1 straight, 1 left then road.wait_into_road_direction_count = [1, 1, 0]
+void cross::update_road_state_in_cross() {
+    for (vector<road*>::iterator iter = roads_into_cross.begin(); iter != roads_into_cross.end(); iter ++) {
+        int now_road_id = (*iter)->get_id();
+        if ((*iter)->if_no_car_through_cross())
+            continue;
+        int next_road_id = (*iter)->get_car_priority_through_cross().get_next_road_in_path();
+        if (next_road_id == -1)
+            continue;
+        int car_direct = this->turn_direct[now_road_id][next_road_id];
+        this->roads_departure_cross[next_road_id]->add_wait_into_road_direction_count(car_direct);
+        
+    }
+}
+
+// sort roads_into_cross by road_id;
+void cross::roads_into_cross_sort_by_id() {
+    //sort(roads_into_cross.begin(),roads_into_cross.end());
+    for (vector<road*>::iterator iter = roads_into_cross.begin(); iter != roads_into_cross.end(); iter ++) {
+        cout << (*iter)->get_id() << " ";
+        //cout << (*iter) << " ";
+    }
+    cout << endl;
+    for (vector<int>::iterator iter = road_id_in_cross.begin(); iter != road_id_in_cross.end(); iter ++) {
+        cout << (*iter) << " ";
+        //cout << (*iter) << " ";
+    }
+    cout << endl;
 }

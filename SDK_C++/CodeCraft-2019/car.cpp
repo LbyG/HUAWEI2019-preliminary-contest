@@ -1,4 +1,5 @@
 #include "car.h"
+#include "util.h"
 
 #include <vector>
 #include <iostream>
@@ -10,29 +11,26 @@ car::car() {
     this->id = 0;
 }
 
+// car_info = (id,from,to,speed,planTime)
 car::car(string car_info) {
     // car_info = (id,from,to,speed,planTime)
-    int len = car_info.size();
-    vector<int> info_val;
-    info_val.clear();
-    int previous_char_pos = -1;
-    int val = 0;
-    for (int i = 0; i < len; ++i) {
-        if (car_info[i] < '0' || car_info[i] > '9') {
-            if (i > (previous_char_pos + 1)) {
-                info_val.push_back(val);
-                val = 0;
-            }
-            previous_char_pos = i;
-        } else {
-            val = val * 10 + (int(car_info[i]) - int('0'));
-        }
-    }
+    vector<int> info_val = parse_string_to_int_vector(car_info);
     this->id = info_val[0];
     this->from = info_val[1];
     this->to = info_val[2];
     this->speed = info_val[3];
     this->plan_time = info_val[4];
+}
+
+// schedule_info = [id, schedule_start_time, schedule_path1, schedule_path2, schedule_path3, schedule_path4, ...]
+void car::set_schedule_path(vector<int> schedule_info) {
+    int len = schedule_info.size();
+    if (len > 2) {
+        this->schedule_start_time = schedule_info[1];
+        this->schedule_path.clear();
+        for (int i = 2; i < len; i ++)
+            this->schedule_path.push_back(schedule_info[i]);
+    }
 }
 
 // return car id
@@ -60,6 +58,11 @@ int car::get_plan_time() const {
     return this->plan_time;
 }
 
+// return car schedule start time
+int car::get_schedule_start_time() const {
+    return this->schedule_start_time;
+}
+
 // set this -> schedule_status = schedule_status
 void car::set_schedule_status(int schedule_status) {
     this->schedule_status = schedule_status;
@@ -68,4 +71,32 @@ void car::set_schedule_status(int schedule_status) {
 // return car schedule status
 int car::get_schedule_status() const {
     return this->schedule_status;
+}
+
+// set this -> dis_to_cross = dis_to_cross
+void car::set_dis_to_cross(int dis_to_cross) {
+    this->dis_to_cross = dis_to_cross;
+}
+
+// return distance from the car to the cross
+int car::get_dis_to_cross() const {
+    return this->dis_to_cross;
+}
+
+// set this -> channel_id = channel_id
+void car::set_channel_id(int channel_id) {
+    this->channel_id = channel_id;
+}
+
+// return channel id which car running in
+int car::get_channel_id() const {
+    return this->channel_id;
+}
+
+// return next road_id in path, if path is empty return -1
+int car::get_next_road_in_path() const {
+    if (this->schedule_path.empty())
+        return -1;
+    else
+        return this->schedule_path.front();
 }

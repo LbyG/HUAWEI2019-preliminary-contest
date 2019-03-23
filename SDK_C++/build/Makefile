@@ -177,6 +177,33 @@ car.cpp.s:
 	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/car.cpp.s
 .PHONY : car.cpp.s
 
+cmp_car_dis_to_cross_and_channel_id.o: cmp_car_dis_to_cross_and_channel_id.cpp.o
+
+.PHONY : cmp_car_dis_to_cross_and_channel_id.o
+
+# target to build an object file
+cmp_car_dis_to_cross_and_channel_id.cpp.o:
+	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/cmp_car_dis_to_cross_and_channel_id.cpp.o
+.PHONY : cmp_car_dis_to_cross_and_channel_id.cpp.o
+
+cmp_car_dis_to_cross_and_channel_id.i: cmp_car_dis_to_cross_and_channel_id.cpp.i
+
+.PHONY : cmp_car_dis_to_cross_and_channel_id.i
+
+# target to preprocess a source file
+cmp_car_dis_to_cross_and_channel_id.cpp.i:
+	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/cmp_car_dis_to_cross_and_channel_id.cpp.i
+.PHONY : cmp_car_dis_to_cross_and_channel_id.cpp.i
+
+cmp_car_dis_to_cross_and_channel_id.s: cmp_car_dis_to_cross_and_channel_id.cpp.s
+
+.PHONY : cmp_car_dis_to_cross_and_channel_id.s
+
+# target to generate assembly for a file
+cmp_car_dis_to_cross_and_channel_id.cpp.s:
+	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/cmp_car_dis_to_cross_and_channel_id.cpp.s
+.PHONY : cmp_car_dis_to_cross_and_channel_id.cpp.s
+
 cmp_car_id.o: cmp_car_id.cpp.o
 
 .PHONY : cmp_car_id.o
@@ -204,32 +231,32 @@ cmp_car_id.cpp.s:
 	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/cmp_car_id.cpp.s
 .PHONY : cmp_car_id.cpp.s
 
-cmp_car_plan_time.o: cmp_car_plan_time.cpp.o
+cmp_car_schedule_start_time.o: cmp_car_schedule_start_time.cpp.o
 
-.PHONY : cmp_car_plan_time.o
+.PHONY : cmp_car_schedule_start_time.o
 
 # target to build an object file
-cmp_car_plan_time.cpp.o:
-	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/cmp_car_plan_time.cpp.o
-.PHONY : cmp_car_plan_time.cpp.o
+cmp_car_schedule_start_time.cpp.o:
+	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/cmp_car_schedule_start_time.cpp.o
+.PHONY : cmp_car_schedule_start_time.cpp.o
 
-cmp_car_plan_time.i: cmp_car_plan_time.cpp.i
+cmp_car_schedule_start_time.i: cmp_car_schedule_start_time.cpp.i
 
-.PHONY : cmp_car_plan_time.i
+.PHONY : cmp_car_schedule_start_time.i
 
 # target to preprocess a source file
-cmp_car_plan_time.cpp.i:
-	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/cmp_car_plan_time.cpp.i
-.PHONY : cmp_car_plan_time.cpp.i
+cmp_car_schedule_start_time.cpp.i:
+	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/cmp_car_schedule_start_time.cpp.i
+.PHONY : cmp_car_schedule_start_time.cpp.i
 
-cmp_car_plan_time.s: cmp_car_plan_time.cpp.s
+cmp_car_schedule_start_time.s: cmp_car_schedule_start_time.cpp.s
 
-.PHONY : cmp_car_plan_time.s
+.PHONY : cmp_car_schedule_start_time.s
 
 # target to generate assembly for a file
-cmp_car_plan_time.cpp.s:
-	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/cmp_car_plan_time.cpp.s
-.PHONY : cmp_car_plan_time.cpp.s
+cmp_car_schedule_start_time.cpp.s:
+	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/cmp_car_schedule_start_time.cpp.s
+.PHONY : cmp_car_schedule_start_time.cpp.s
 
 cross.o: cross.cpp.o
 
@@ -312,6 +339,33 @@ road.cpp.s:
 	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/road.cpp.s
 .PHONY : road.cpp.s
 
+util.o: util.cpp.o
+
+.PHONY : util.o
+
+# target to build an object file
+util.cpp.o:
+	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/util.cpp.o
+.PHONY : util.cpp.o
+
+util.i: util.cpp.i
+
+.PHONY : util.i
+
+# target to preprocess a source file
+util.cpp.i:
+	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/util.cpp.i
+.PHONY : util.cpp.i
+
+util.s: util.cpp.s
+
+.PHONY : util.s
+
+# target to generate assembly for a file
+util.cpp.s:
+	$(MAKE) -f CMakeFiles/CodeCraft-2019.dir/build.make CMakeFiles/CodeCraft-2019.dir/util.cpp.s
+.PHONY : util.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -327,12 +381,15 @@ help:
 	@echo "... car.o"
 	@echo "... car.i"
 	@echo "... car.s"
+	@echo "... cmp_car_dis_to_cross_and_channel_id.o"
+	@echo "... cmp_car_dis_to_cross_and_channel_id.i"
+	@echo "... cmp_car_dis_to_cross_and_channel_id.s"
 	@echo "... cmp_car_id.o"
 	@echo "... cmp_car_id.i"
 	@echo "... cmp_car_id.s"
-	@echo "... cmp_car_plan_time.o"
-	@echo "... cmp_car_plan_time.i"
-	@echo "... cmp_car_plan_time.s"
+	@echo "... cmp_car_schedule_start_time.o"
+	@echo "... cmp_car_schedule_start_time.i"
+	@echo "... cmp_car_schedule_start_time.s"
 	@echo "... cross.o"
 	@echo "... cross.i"
 	@echo "... cross.s"
@@ -342,6 +399,9 @@ help:
 	@echo "... road.o"
 	@echo "... road.i"
 	@echo "... road.s"
+	@echo "... util.o"
+	@echo "... util.i"
+	@echo "... util.s"
 .PHONY : help
 
 

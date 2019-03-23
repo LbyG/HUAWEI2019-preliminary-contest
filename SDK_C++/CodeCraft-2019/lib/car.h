@@ -2,27 +2,68 @@
 #define CAR_H
 
 #include <string>
+#include <list>
+#include <vector>
 
 using namespace std;
 
 class car {
 private:
-    int id; // car id
-    int from; // start from which cross_id
-    int to; // arrive to which cross_id;
-    int speed; // car max speed limit
-    int plan_time; // car plan start time
-    int schedule_status; // schedule_status == 0 schedule wait; schedule_status == 1 cross wait; schedule_status == 2 end state;
+    // car id
+    int id; 
+    // start from which cross_id
+    int from;
+    // arrive to which cross_id;
+    int to; 
+    // car max speed limit
+    int speed; 
+    // car plan start time
+    int plan_time; 
+    
+    // car schedule start time
+    int schedule_start_time;
+    // car schedule path
+    list<int> schedule_path;
+    
+    // schedule_status == 0 termination state; schedule_status == 1 wait state;
+    int schedule_status; 
+    // distance from the car to the cross
+    int dis_to_cross;
+    // channel id which car running in
+    int channel_id;
 public:
     car();
-    car(string car_info); // car_info = (id,from,to,speed,planTime)
-    int get_id() const; // return car id
-    int get_from() const; // reutrn car start from cross_id;
-    int get_to() const; // return car arrive to cross_id;
-    int get_speed() const; // return car speed
-    int get_plan_time() const; // return car plan start time
-    void set_schedule_status(int schedule_status); // set this -> schedule_status = schedule_status
-    int get_schedule_status() const; // return car schedule status
+    // car_info = (id,from,to,speed,planTime)
+    car(string car_info); 
+    // schedule_info = [id, schedule_start_time, schedule_path1, schedule_path2, schedule_path3, schedule_path4, ...]
+    void set_schedule_path(vector<int> schedule_info);
+    // return car id
+    int get_id() const; 
+    // reutrn car start from cross_id;
+    int get_from() const; 
+    // return car arrive to cross_id;
+    int get_to() const;
+    // return car speed
+    int get_speed() const; 
+    // return car plan start time
+    int get_plan_time() const; 
+    // return car schedule start time
+    int get_schedule_start_time() const; 
+    
+    // set this -> schedule_status = schedule_status
+    void set_schedule_status(int schedule_status);
+    // return car schedule status
+    int get_schedule_status() const; 
+    // set this -> dis_to_cross = dis_to_cross
+    void set_dis_to_cross(int dis_to_cross);
+    // return distance from the car to the cross
+    int get_dis_to_cross() const;
+    // set this -> channel_id = channel_id
+    void set_channel_id(int channel_id);
+    // return channel id which car running in
+    int get_channel_id() const;
+    // return next road_id in path, if path is empty return -1
+    int get_next_road_in_path() const;
 };
 
 #endif

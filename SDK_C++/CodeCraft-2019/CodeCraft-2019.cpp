@@ -1,6 +1,7 @@
 #include "iostream"
 #include "car.h"
 #include "overall_schedule.h"
+#include "util.h"
 
 using namespace std;
 
@@ -25,7 +26,7 @@ int main(int argc, char *argv[])
 	
 	// TODO:read input filebuf
     overall_schedule OS;
-    OS.load_cars_road_cross(carPath, roadPath, crossPath);
+    OS.load_cars_roads_crosses(carPath, roadPath, crossPath);
 	// TODO:process
     OS.load_answer(answerPath);
     int T = OS.schedule_cars();
@@ -38,6 +39,10 @@ int main(int argc, char *argv[])
     *p_a = 2;
     cout << a << endl;
     cout << *v[0] << endl;
+    vector<int> v1 = vector<int>(3, 0);
+    cout << v1[0] << v1[1] << v1[2] << endl;
+    v1[2] = 2;
+    cout << v1.back() << endl;
 	
 	return 0;
 }
