@@ -118,6 +118,8 @@ bool road::check_direct_priority(int car_turn_direct) {
     for (int i = 0; i < car_turn_direct; i ++)
         if (this->wait_into_road_direction_count[i] > 0)
             return false;
+        else if (this->wait_into_road_direction_count[i] < 0)
+            cout << "road::check_direct_priority error !!!!!!!!!!!!!!!!!!" << endl;
     return true;
 }
 
@@ -268,7 +270,7 @@ int road::car_into_road(car into_car) {
 
 // output road status
 void road::output_status() {
-    cout << "road id = " << this->id << " from = " << this->from << " to = " << this->to << endl;
+    cout << "road id = " << this->id << " from = " << this->from << " to = " << this->to << " length = " << this->length << endl;
     for (int i = 0; i < this->channel; i ++) {
         cout << "   channel id = " << i << ":";
         for (list<car>::iterator iter = this->cars_in_road[i].begin(); iter != this->cars_in_road[i].end(); iter ++) {

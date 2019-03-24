@@ -176,7 +176,7 @@ bool overall_schedule::schedule_cars_one_time_unit() {
     // If car blocked by end state car then car move to the back of the previous car
     this->schedule_cars_running_in_road();
     
-    this->output_schedule_status();
+//    this->output_schedule_status();
     
     // Cycling the relevant roads at each cross until all car are end state
     while (this->cars_running_wait_state_n > 0) {
@@ -184,8 +184,11 @@ bool overall_schedule::schedule_cars_one_time_unit() {
         for (map<int, cross>::iterator iter = crosses.begin(); iter != crosses.end(); iter ++) {
             wait_to_termination_n += iter->second.schedule_cars_in_cross(this->cars_running_n, this->cars_arrive_destination_n);
         }
-        if (wait_to_termination_n == 0)
+        if (wait_to_termination_n == 0) {
+            cout << "cars_running_wait_state_n = " << this->cars_running_wait_state_n << " wait_to_termination_n = " << wait_to_termination_n << endl; 
+            this->output_schedule_status();
             return false;
+        }
         this->cars_running_wait_state_n -= wait_to_termination_n;
     }
     
@@ -194,7 +197,7 @@ bool overall_schedule::schedule_cars_one_time_unit() {
     // cars_wait_run_list -> cars_in_road
     this->schedule_cars_wait_run();
     
-    this->output_schedule_status();
+//    this->output_schedule_status();
     return true;
 }
 
@@ -214,7 +217,6 @@ int overall_schedule::schedule_cars() {
 
 // output car schedule status
 void overall_schedule::output_schedule_status() {
-    return;
     cout << "========show schedule status=========" << endl;
     cout << "T = " << this->T << endl;
     cout << "cars_wait_schedule_start_time_n = " << this->cars_wait_schedule_start_time_n << endl;
