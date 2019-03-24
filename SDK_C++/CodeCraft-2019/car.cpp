@@ -20,6 +20,13 @@ car::car(string car_info) {
     this->to = info_val[2];
     this->speed = info_val[3];
     this->plan_time = info_val[4];
+    
+    // schedule_status == 0 termination state; schedule_status == 1 wait state;
+    this->schedule_status = 0; 
+    // distance from the car to the cross
+    this->dis_to_cross = 0;
+    // channel id which car running in
+    this->channel_id = -1;
 }
 
 // schedule_info = [id, schedule_start_time, schedule_path1, schedule_path2, schedule_path3, schedule_path4, ...]
@@ -63,6 +70,19 @@ int car::get_schedule_start_time() const {
     return this->schedule_start_time;
 }
 
+// return next road_id in path, if path is empty return -1
+int car::get_next_road_in_path() const {
+    if (this->schedule_path.empty())
+        return -1;
+    else
+        return this->schedule_path.front();
+}
+
+// arrive next road, so this->schedule_path.pop_front();
+void car::arrive_next_road_path() {
+    this->schedule_path.pop_front();
+}
+
 // set this -> schedule_status = schedule_status
 void car::set_schedule_status(int schedule_status) {
     this->schedule_status = schedule_status;
@@ -93,10 +113,7 @@ int car::get_channel_id() const {
     return this->channel_id;
 }
 
-// return next road_id in path, if path is empty return -1
-int car::get_next_road_in_path() const {
-    if (this->schedule_path.empty())
-        return -1;
-    else
-        return this->schedule_path.front();
+// Overload < for road by id
+bool operator<(const car &a, const car &b) {
+    return a.get_id() < b.get_id();
 }

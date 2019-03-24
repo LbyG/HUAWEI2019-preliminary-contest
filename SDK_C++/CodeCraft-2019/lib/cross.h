@@ -41,6 +41,13 @@ public:
     // update road state in cross
     void update_road_state_in_cross();
     void roads_into_cross_sort_by_id();
+    
+    // car to next road, maybe return -2, -1, 0, 1
+    // if road is be termination status cars fill up return -2
+    // else if car speed_in_road <= car.dis_to_cross in previous road, then dis_move_in_road = 0 -> car don't enter this road, car.dis_to_cross = 0 and return -1 
+    // else if car into road don't be block or block by a car which is termination status, car enter road, return 1
+    // else car can't enter road, need wait previous car to be termination state return 0
+    int car_to_next_road(car car_through_cross);
 };
 
 #endif

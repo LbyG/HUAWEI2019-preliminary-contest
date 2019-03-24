@@ -15,6 +15,7 @@ using namespace std;
 
 class overall_schedule {
 private:
+    int T;
     // N = cars_wait_schedule_start_time_n + cars_wait_run_n + cars_running_n + cars_arrive_destination_n
     // number of cars which T < car.schedule_start_time
     int cars_wait_schedule_start_time_n; 
@@ -23,7 +24,7 @@ private:
     // the number of cars which T >= car.schedule_start_time but wait to running in road
     int cars_wait_run_n; 
     // cars which T >= car.schedule_start_time but wait to running in road, priority depend on id
-    priority_queue<car, vector<car>, cmp_car_id> cars_wait_run_list;
+    vector<car> cars_wait_run_list;
     // the number of cars which is running in road
     int cars_running_n; 
     // the number of cars which is arrive destination
@@ -60,11 +61,19 @@ public:
     // If car don't be block and can't through cross then car run one time slice and into end state -> car.schedule_status = 2
     // If car blocked by end state car then car move to the back of the previous car
     void schedule_cars_running_in_road();
+    // Schedule cars which arrive schedule time or wait start
+    // cars_wait_schedule_start_time_list -> cars_wait_run_list
+    // cars_wait_run_list -> cars_in_road
+    void schedule_cars_wait_run();
+    
     // schedule cars in one time unit
     // if deadblock return false
     bool schedule_cars_one_time_unit();
     // return all cars arrive to_cross_id need how much times
     int schedule_cars(); 
+    
+    // output car schedule status
+    void output_schedule_status();
 };
 
 #endif

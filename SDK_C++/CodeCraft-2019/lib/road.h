@@ -74,6 +74,17 @@ public:
     // return number of from wait state to termination status
     int schedule_cars_running_in_channel(int channel_id);
     int schedule_cars_running_in_road();
+    
+    // check the road all channel whether be fill up
+    // be fill up -> true else -> false
+    bool whether_be_fill_up();
+    // if car speed_in_road <= car.dis_to_cross in previous road, then dis_move_in_road = 0 -> car don't enter this road, car.dis_to_cross = 0 and return -1 
+    // else if car into road don't be block or block by a car which is termination status, car enter road, return 1
+    // else car can't enter road, need wait previous car to be termination state return 0
+    int car_into_road(car into_car);
+    
+    // output road status
+    void output_status();
 };
 
 bool operator<(const road &a, const road &b);

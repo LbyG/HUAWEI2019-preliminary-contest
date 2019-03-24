@@ -47,8 +47,13 @@ public:
     int get_speed() const; 
     // return car plan start time
     int get_plan_time() const; 
+    
     // return car schedule start time
-    int get_schedule_start_time() const; 
+    int get_schedule_start_time() const;
+    // return next road_id in path, if path is empty return -1
+    int get_next_road_in_path() const;
+    // arrive next road, so this->schedule_path.pop_front();
+    void arrive_next_road_path();
     
     // set this -> schedule_status = schedule_status
     void set_schedule_status(int schedule_status);
@@ -62,8 +67,8 @@ public:
     void set_channel_id(int channel_id);
     // return channel id which car running in
     int get_channel_id() const;
-    // return next road_id in path, if path is empty return -1
-    int get_next_road_in_path() const;
 };
+
+bool operator<(const car &a, const car &b);
 
 #endif

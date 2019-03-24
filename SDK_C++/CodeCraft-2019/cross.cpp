@@ -69,9 +69,12 @@ void cross::update_road_state_in_cross() {
         if ((*iter)->if_no_car_through_cross())
             continue;
         int next_road_id = (*iter)->get_car_priority_through_cross().get_next_road_in_path();
+        int car_direct = 0;
         if (next_road_id == -1)
-            continue;
-        int car_direct = this->turn_direct[now_road_id][next_road_id];
+            // arrive destination deal as straight
+            car_direct = 0;
+        else
+            car_direct = this->turn_direct[now_road_id][next_road_id];
         this->roads_departure_cross[next_road_id]->add_wait_into_road_direction_count(car_direct);
         
     }
@@ -90,4 +93,16 @@ void cross::roads_into_cross_sort_by_id() {
         //cout << (*iter) << " ";
     }
     cout << endl;
+}
+
+// car to next road, maybe return -2, -1, 0, 1
+// if road is be termination status cars fill up return -2
+// if car speed_in_road <= car.dis_to_cross in previous road, then dis_move_in_road = 0 -> car don't enter this road, car.dis_to_cross = 0 and return -1 
+// else if car into road don't be block or block by a car which is termination status, car enter road, return 1
+// else car can't enter road, need wait previous car to be termination state return 0
+int cross::car_to_next_road(car car_through_cross) {
+    road* next_road = this->roads_departure_cross[car_through_cross.get_next_road_in_path()];
+    if (next_road->whether_be_fill_up())
+        return -2;
+    return next_road->car_into_road(car_through_cross);
 }
