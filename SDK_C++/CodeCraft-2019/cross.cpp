@@ -69,13 +69,11 @@ void cross::update_road_state_in_cross(road* road_pointer) {
         return;
     int next_road_id = road_pointer->get_car_priority_through_cross().get_next_road_in_path();
     if (next_road_id == -1) {
-        /*
         for (map<int, road*>::iterator iter = this->roads_departure_cross.begin(); iter != this->roads_departure_cross.end(); iter ++) {
             next_road_id = iter->first;
             if (next_road_id != now_road_id && this->turn_direct[now_road_id][next_road_id] == 0)
                 this->roads_departure_cross[next_road_id]->add_wait_into_road_direction_count(0);
         }
-        */
         // car will arrive destination
         return;
     }
@@ -135,14 +133,12 @@ int cross::schedule_cars_in_cross(int &cars_running_n, int &cars_arrive_destinat
                 (*iter)->have_car_through_cross(channel_id);
                 wait_to_termination_n += (*iter)->schedule_cars_running_in_channel(channel_id);
                 // update direct priority
-                /*
                 for (map<int, road*>::iterator iter1 = this->roads_departure_cross.begin(); iter1 != this->roads_departure_cross.end(); iter1 ++) {
                     int next_road_id = iter1->first;
                     int now_road_id = (*iter)->get_id();
                     if (next_road_id != now_road_id && this->turn_direct[now_road_id][next_road_id] == 0)
                         this->roads_departure_cross[next_road_id]->sub_wait_into_road_direction_count(0);
                 }
-                */
                 this->update_road_state_in_cross(*iter);
                 continue;
             }
