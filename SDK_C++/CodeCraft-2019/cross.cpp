@@ -63,20 +63,23 @@ void cross::add_road_departure_cross(int road_id, road* road_pointer) {
 
 // update road state in cross
 // if for a road have 1 straight, 1 left then road.wait_into_road_direction_count = [1, 1, 0]
+void cross::update_road_state_in_cross(road* road_pointer) {
+    int now_road_id = road_pointer->get_id();
+    if (road_pointer->if_no_car_through_cross())
+        return;
+    int next_road_id = road_pointer->get_car_priority_through_cross().get_next_road_in_path();
+    if (next_road_id == -1)
+        // car will arrive destination
+        return;
+    int car_direct = this->turn_direct[now_road_id][next_road_id];
+    this->roads_departure_cross[next_road_id]->add_wait_into_road_direction_count(car_direct);
+}
+
+// update road state in cross
+// if for a road have 1 straight, 1 left then road.wait_into_road_direction_count = [1, 1, 0]
 void cross::update_road_state_in_cross() {
     for (vector<road*>::iterator iter = roads_into_cross.begin(); iter != roads_into_cross.end(); iter ++) {
-        int now_road_id = (*iter)->get_id();
-        if ((*iter)->if_no_car_through_cross())
-            continue;
-        int next_road_id = (*iter)->get_car_priority_through_cross().get_next_road_in_path();
-        int car_direct = 0;
-        if (next_road_id == -1)
-            // arrive destination deal as straight
-            car_direct = 0;
-        else
-            car_direct = this->turn_direct[now_road_id][next_road_id];
-        this->roads_departure_cross[next_road_id]->add_wait_into_road_direction_count(car_direct);
-        
+        this->update_road_state_in_cross(*iter);
     }
 }
 
@@ -105,4 +108,62 @@ int cross::car_to_next_road(car car_through_cross) {
     if (next_road->whether_be_fill_up())
         return -2;
     return next_road->car_into_road(car_through_cross);
+}
+
+// schedule cars can through cross
+// return number of cars from wait status to termination status in this schedule
+int cross::schedule_cars_in_cross(int &cars_running_n, int &cars_arrive_destination_n) {
+    int wait_to_termination_n = 0;
+    for (vector<road*>::iterator iter = this->roads_into_cross.begin(); iter != this->roads_into_cross.end(); iter ++) {
+        while (!(*iter)->if_no_car_through_cross()) {
+            car car_through_cross = (*iter)->get_car_priority_through_cross();
+            if (car_through_cross.get_next_road_in_path() == -1) {
+                // car arrive destination
+                wait_to_termination_n ++;
+                cars_running_n --;
+                cars_arrive_destination_n ++;
+                int channel_id = car_through_cross.get_channel_id();
+                (*iter)->have_car_through_cross(channel_id);
+                wait_to_termination_n += (*iter)->schedule_cars_running_in_channel(channel_id);
+                continue;
+            }
+            road* next_road = this->roads_departure_cross[car_through_cross.get_next_road_in_path()];
+            int car_turn_direct = this->turn_direct[((*iter)->get_id())][next_road->get_id()];
+            if (next_road->check_direct_priority(car_turn_direct)) {
+                // car direct have priority enter to road
+                int channel_id = car_through_cross.get_channel_id();
+                if (next_road->whether_be_fill_up()) {
+                    // road is be fill up by cars which is termination status
+                    wait_to_termination_n += (*iter)->forefront_car_remain_in_cross(channel_id);
+                    next_road->sub_wait_into_road_direction_count(car_turn_direct);
+                    continue;
+                } else {
+                    // road don't be fill up
+                    int flag = next_road->car_into_road(car_through_cross);
+                    if (flag == -1) {
+                        // car speed in next raod < dis_to_cross, so car be remain in cross
+                        wait_to_termination_n += (*iter)->forefront_car_remain_in_cross(channel_id);
+                        next_road->sub_wait_into_road_direction_count(car_turn_direct);
+                        continue;
+                    } else if (flag == 0) {
+                        // car block by car which is wait state
+                        break;
+                    } else if (flag == 1) {
+                        // car enter next road
+                        wait_to_termination_n ++;
+                        (*iter)->have_car_through_cross(channel_id);
+                        wait_to_termination_n += (*iter)->schedule_cars_running_in_channel(channel_id);
+                        // update direct priority
+                        next_road->sub_wait_into_road_direction_count(car_turn_direct);
+                        this->update_road_state_in_cross(*iter);
+                    }
+                }
+            } else {
+                // need wait other direct to through
+                break;
+            }
+            
+        }
+    }
+    return wait_to_termination_n;
 }

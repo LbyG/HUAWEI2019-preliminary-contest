@@ -39,6 +39,7 @@ public:
     // sort roads_into_cross by road_id;
     
     // update road state in cross
+    void update_road_state_in_cross(road* road_pointer);
     void update_road_state_in_cross();
     void roads_into_cross_sort_by_id();
     
@@ -48,6 +49,9 @@ public:
     // else if car into road don't be block or block by a car which is termination status, car enter road, return 1
     // else car can't enter road, need wait previous car to be termination state return 0
     int car_to_next_road(car car_through_cross);
+    // schedule cars can through cross
+    // return number of cars from wait status to termination status in this schedule
+    int schedule_cars_in_cross(int &cars_running_n, int &cars_arrive_destination_n);
 };
 
 #endif

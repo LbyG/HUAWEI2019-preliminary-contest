@@ -59,9 +59,15 @@ public:
     bool if_no_car_through_cross();
     // get car which have priority through cross, wait_car_forefront_of_each_channel
     car get_car_priority_through_cross();
+    // have car through cross
+    void have_car_through_cross(int channel_id);
     
     // wait_into_road_direction_count[car_direct] += 1
     void add_wait_into_road_direction_count(int car_direct);
+    // wait_into_road_direction_count[car_direct] -= 1
+    void sub_wait_into_road_direction_count(int car_direct);
+    // check whether car_turn_direct can enter this road
+    bool check_direct_priority(int car_turn_direct);
     
     // init cars' schedule state to wait state which in channel
     // return number of cars in channel
@@ -74,6 +80,8 @@ public:
     // return number of from wait state to termination status
     int schedule_cars_running_in_channel(int channel_id);
     int schedule_cars_running_in_road();
+    // forefront car because some reason it need remain in cross
+    int forefront_car_remain_in_cross(int channel_id);
     
     // check the road all channel whether be fill up
     // be fill up -> true else -> false

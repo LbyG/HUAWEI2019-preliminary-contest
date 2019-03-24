@@ -175,15 +175,20 @@ bool overall_schedule::schedule_cars_one_time_unit() {
     // If car don't be block and can't through cross then car run one time slice and into end state -> car.schedule_status = 2
     // If car blocked by end state car then car move to the back of the previous car
     this->schedule_cars_running_in_road();
-    /*
+    
+    this->output_schedule_status();
+    
     // Cycling the relevant roads at each cross until all car are end state
-    while (car_wait_in_cross_n > 0) {
-        for (all crosses) {
-            // todo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            schedule_cars_in_cross()
+    while (this->cars_running_wait_state_n > 0) {
+        int wait_to_termination_n = 0;
+        for (map<int, cross>::iterator iter = crosses.begin(); iter != crosses.end(); iter ++) {
+            wait_to_termination_n += iter->second.schedule_cars_in_cross(this->cars_running_n, this->cars_arrive_destination_n);
         }
+        if (wait_to_termination_n == 0)
+            return false;
+        this->cars_running_wait_state_n -= wait_to_termination_n;
     }
-    */
+    
     // Schedule cars which arrive schedule time or wait start
     // cars_wait_schedule_start_time_list -> cars_wait_run_list
     // cars_wait_run_list -> cars_in_road
@@ -198,17 +203,18 @@ int overall_schedule::schedule_cars() {
     this->initial_cars_state_in_T0();
     // If all cars is arrive then break
     while (this->cars_wait_schedule_start_time_n > 0 || this->cars_wait_run_n > 0 || this->cars_running_n > 0) {
-        if (!this->schedule_cars_one_time_unit())
+        if (!this->schedule_cars_one_time_unit()) {
+            cout << "deadblock!!!!!!!!!!!!!!!" << endl;
             return -1;
+        }
         this->T ++;
-        if (this->T > 3)
-            break;
     }
     return this->T;
 }
 
 // output car schedule status
 void overall_schedule::output_schedule_status() {
+    return;
     cout << "========show schedule status=========" << endl;
     cout << "T = " << this->T << endl;
     cout << "cars_wait_schedule_start_time_n = " << this->cars_wait_schedule_start_time_n << endl;
@@ -224,7 +230,8 @@ void overall_schedule::output_schedule_status() {
     cout << "cars_running_termination_state_n = " << this->cars_running_termination_state_n << endl;
     cout << "car running in the road:" << endl;
     for (list<road>::iterator iter = roads_connect_cross.begin(); iter != roads_connect_cross.end(); iter ++) {
-        iter->output_status();
+        if (!iter->if_no_car_through_cross())
+            iter->output_status();
     }
     cout << "=====================================" << endl;
 }

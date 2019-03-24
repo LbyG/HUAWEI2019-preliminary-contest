@@ -98,9 +98,27 @@ car road::get_car_priority_through_cross() {
     return this->wait_car_forefront_of_each_channel.top();
 }
 
+// have car through cross
+void road::have_car_through_cross(int channel_id) {
+    this->cars_in_road[channel_id].pop_front();
+    this->wait_car_forefront_of_each_channel.pop();
+}
+
 // wait_into_road_direction_count[car_direct] += 1
 void road::add_wait_into_road_direction_count(int car_direct) {
     this->wait_into_road_direction_count[car_direct] += 1;
+}
+// wait_into_road_direction_count[car_direct] -= 1
+void road::sub_wait_into_road_direction_count(int car_direct) {
+    this->wait_into_road_direction_count[car_direct] -= 1;
+}
+
+// check whether car_turn_direct can enter this road
+bool road::check_direct_priority(int car_turn_direct) {
+    for (int i = 0; i < car_turn_direct; i ++)
+        if (this->wait_into_road_direction_count[i] > 0)
+            return false;
+    return true;
 }
 
 // init cars' schedule state to wait state which in channel
@@ -125,20 +143,22 @@ int road::schedule_cars_running_in_channel(int channel_id) {
     if (this->cars_in_road[channel_id].empty())
         return cars_running_termination_status_n;
     list<car>::iterator iter = this->cars_in_road[channel_id].begin();
-    if (iter->get_schedule_status() == 0)
-        return cars_running_termination_status_n;
     int car_dis_to_cross = iter->get_dis_to_cross();
     int speed_car_in_road = min(this->speed, iter->get_speed());
-    // deal forefront car in channel
-    if (car_dis_to_cross >= speed_car_in_road) {
-        // forefront car can't through cross -> drive and to termination state
-        iter->set_dis_to_cross(car_dis_to_cross - speed_car_in_road);
-        iter->set_schedule_status(0);
-        cars_running_termination_status_n ++;
-    } else {
-        // forefront car can through cross -> to wait state
-        this->wait_car_forefront_of_each_channel.push(*iter);
-        iter->set_schedule_status(1);
+    if (iter->get_schedule_status() == 1) {
+        // if forefront car is terminate state then don't to schedule
+        // because have forefront because next road is fiil up so termination remain in cross
+        // deal forefront car in channel
+        if (car_dis_to_cross >= speed_car_in_road) {
+            // forefront car can't through cross -> drive and to termination state
+            iter->set_dis_to_cross(car_dis_to_cross - speed_car_in_road);
+            iter->set_schedule_status(0);
+            cars_running_termination_status_n ++;
+        } else {
+            // forefront car can through cross -> to wait state
+            this->wait_car_forefront_of_each_channel.push(*iter);
+            iter->set_schedule_status(1);
+        }
     }
     list<car>::iterator previous_iter = iter;
     int previous_car_dis_to_cross = previous_iter->get_dis_to_cross();
@@ -183,6 +203,16 @@ int road::schedule_cars_running_in_road() {
         cars_running_wait_status_n -= this->schedule_cars_running_in_channel(channel_id);
     }
     return cars_running_wait_status_n;
+}
+
+// forefront car because some reason it need remain in cross
+int road::forefront_car_remain_in_cross(int channel_id) {
+    int wait_to_termination_n = 1;
+    this->wait_car_forefront_of_each_channel.pop();
+    this->cars_in_road[channel_id].front().set_schedule_status(0);
+    this->cars_in_road[channel_id].front().set_dis_to_cross(0);
+    wait_to_termination_n += this->schedule_cars_running_in_channel(channel_id);
+    return wait_to_termination_n;
 }
 
 // check the road all channel whether be fill up

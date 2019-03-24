@@ -5,5 +5,5 @@ bool cmp_car_dis_to_cross_and_channel_id::operator() (const car &a, const car &b
     if (a.get_dis_to_cross() == b.get_dis_to_cross())
         return a.get_channel_id() > b.get_channel_id();
     else
-        return a.get_id() > b.get_id();
+        return a.get_dis_to_cross() > b.get_dis_to_cross();
 }
