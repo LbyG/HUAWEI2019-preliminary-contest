@@ -101,6 +101,7 @@ void overall_schedule::load_answer(string answer_path) {
 // initial all data in T = 0
 void overall_schedule::initial_cars_state_in_T0() {
     this->T = 0;
+    this->all_cars_running_time = 0;
     // number of cars which T < car.schedule_start_time
     this->cars_wait_schedule_start_time_n = this->get_cars_n(); 
     // cars which T < car.schedule_start_time, priority depend on schedule_start_time
@@ -182,7 +183,7 @@ bool overall_schedule::schedule_cars_one_time_unit() {
     while (this->cars_running_wait_state_n > 0) {
         int wait_to_termination_n = 0;
         for (map<int, cross>::iterator iter = crosses.begin(); iter != crosses.end(); iter ++) {
-            wait_to_termination_n += iter->second.schedule_cars_in_cross(this->cars_running_n, this->cars_arrive_destination_n);
+            wait_to_termination_n += iter->second.schedule_cars_in_cross(this->cars_running_n, this->cars_arrive_destination_n, this->all_cars_running_time, this->T);
         }
         if (wait_to_termination_n == 0) {
             cout << "cars_running_wait_state_n = " << this->cars_running_wait_state_n << " wait_to_termination_n = " << wait_to_termination_n << endl; 
@@ -212,6 +213,7 @@ int overall_schedule::schedule_cars() {
         }
         this->T ++;
     }
+    cout << "all cars running time = " << this->all_cars_running_time << endl;
     return this->T;
 }
 
@@ -232,7 +234,7 @@ void overall_schedule::output_schedule_status() {
     cout << "cars_running_termination_state_n = " << this->cars_running_termination_state_n << endl;
     cout << "car running in the road:" << endl;
     for (list<road>::iterator iter = roads_connect_cross.begin(); iter != roads_connect_cross.end(); iter ++) {
-        if (!iter->if_no_car_through_cross())
+//        if (!iter->if_no_car_through_cross())
             iter->output_status();
     }
     cout << "=====================================" << endl;

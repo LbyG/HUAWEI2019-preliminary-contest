@@ -51,7 +51,7 @@ public:
     int car_to_next_road(car car_through_cross);
     // schedule cars can through cross
     // return number of cars from wait status to termination status in this schedule
-    int schedule_cars_in_cross(int &cars_running_n, int &cars_arrive_destination_n);
+    int schedule_cars_in_cross(int &cars_running_n, int &cars_arrive_destination_n, int &all_cars_running_time, int T);
 };
 
 #endif
