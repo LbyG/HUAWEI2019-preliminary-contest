@@ -69,13 +69,11 @@ void cross::update_road_state_in_cross(road* road_pointer) {
         return;
     int next_road_id = road_pointer->get_car_priority_through_cross().get_next_road_in_path();
     if (next_road_id == -1) {
-        
         for (map<int, road*>::iterator iter = this->roads_departure_cross.begin(); iter != this->roads_departure_cross.end(); iter ++) {
             next_road_id = iter->first;
             if (next_road_id != now_road_id && this->turn_direct[now_road_id][next_road_id] == 0)
                 this->roads_departure_cross[next_road_id]->add_wait_into_road_direction_count(0);
         }
-        
         // car will arrive destination
         return;
     }

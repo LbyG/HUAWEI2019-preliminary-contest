@@ -1,4 +1,4 @@
-# Install script for directory: /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019
+# Install script for directory: /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/CAR_SCHEDULE/CodeCraft-2019
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/CAR_SCHEDULE/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

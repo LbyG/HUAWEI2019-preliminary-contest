@@ -157,11 +157,15 @@ void overall_schedule::schedule_cars_wait_run() {
     vector<car> car_still_wait_run;
     car_still_wait_run.clear();
     for (vector<car>::iterator iter = this->cars_wait_run_list.begin(); iter != this->cars_wait_run_list.end(); iter ++) {
-        if (this->crosses[iter->get_from()].car_to_next_road(*iter) == 1) {
+        int flag = this->crosses[iter->get_from()].car_to_next_road(*iter);
+        if (flag == 1) {
             this->cars_wait_run_n --;
             this->cars_running_n ++;
-        } else {
+        } else if (flag == -2) {
+            
             car_still_wait_run.push_back(*iter);
+        } else {
+            cout << "overall_schedule::schedule_cars_wait_run  error !!!!!!!!!!!!!!!!!!!" << endl;
         }
     }
     this->cars_wait_run_list = car_still_wait_run;
@@ -183,7 +187,15 @@ bool overall_schedule::schedule_cars_one_time_unit() {
     while (this->cars_running_wait_state_n > 0) {
         int wait_to_termination_n = 0;
         for (map<int, cross>::iterator iter = crosses.begin(); iter != crosses.end(); iter ++) {
+            /*
+            while (true) {
+                int tmp = iter->second.schedule_cars_in_cross(this->cars_running_n, this->cars_arrive_destination_n, this->all_cars_running_time, this->T);
+                wait_to_termination_n += tmp;
+                if (tmp == 0)
+                    break;
+            */
             wait_to_termination_n += iter->second.schedule_cars_in_cross(this->cars_running_n, this->cars_arrive_destination_n, this->all_cars_running_time, this->T);
+            //}
         }
         if (wait_to_termination_n == 0) {
             cout << "cars_running_wait_state_n = " << this->cars_running_wait_state_n << " wait_to_termination_n = " << wait_to_termination_n << endl; 
@@ -234,7 +246,7 @@ void overall_schedule::output_schedule_status() {
     cout << "cars_running_termination_state_n = " << this->cars_running_termination_state_n << endl;
     cout << "car running in the road:" << endl;
     for (list<road>::iterator iter = roads_connect_cross.begin(); iter != roads_connect_cross.end(); iter ++) {
- //       if (!iter->if_no_car_through_cross())
+        if (!iter->if_no_car_through_cross())
             iter->output_status();
     }
     cout << "=====================================" << endl;

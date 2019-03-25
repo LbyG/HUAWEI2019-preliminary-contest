@@ -157,11 +157,15 @@ void overall_schedule::schedule_cars_wait_run() {
     vector<car> car_still_wait_run;
     car_still_wait_run.clear();
     for (vector<car>::iterator iter = this->cars_wait_run_list.begin(); iter != this->cars_wait_run_list.end(); iter ++) {
-        if (this->crosses[iter->get_from()].car_to_next_road(*iter) == 1) {
+        int flag = this->crosses[iter->get_from()].car_to_next_road(*iter);
+        if (flag == 1) {
             this->cars_wait_run_n --;
             this->cars_running_n ++;
-        } else {
+        } else if (flag == -2) {
+            
             car_still_wait_run.push_back(*iter);
+        } else {
+            cout << "overall_schedule::schedule_cars_wait_run  error !!!!!!!!!!!!!!!!!!!" << endl;
         }
     }
     this->cars_wait_run_list = car_still_wait_run;
