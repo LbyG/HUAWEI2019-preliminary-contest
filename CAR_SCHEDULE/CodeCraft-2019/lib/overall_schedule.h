@@ -15,6 +15,7 @@ using namespace std;
 
 class overall_schedule {
 private:
+    map<int, int> arrive_car_id_count;
     int T;
     int all_cars_running_time;
     // N = cars_wait_schedule_start_time_n + cars_wait_run_n + cars_running_n + cars_arrive_destination_n

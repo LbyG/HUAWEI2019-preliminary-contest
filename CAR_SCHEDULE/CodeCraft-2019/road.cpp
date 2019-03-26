@@ -100,6 +100,9 @@ car road::get_car_priority_through_cross() {
 
 // have car through cross
 void road::have_car_through_cross(int channel_id) {
+    if (this->cars_in_road[channel_id].front().get_dis_to_cross() != this->wait_car_forefront_of_each_channel.top().get_dis_to_cross()) {
+        cout << "road::have_car_through_cross error !!!!!!!!!!!!!!!!!!!!" << endl;
+    }
     this->cars_in_road[channel_id].pop_front();
     this->wait_car_forefront_of_each_channel.pop();
 }
@@ -118,7 +121,7 @@ bool road::check_direct_priority(int car_turn_direct) {
     for (int i = 0; i < car_turn_direct; i ++)
         if (this->wait_into_road_direction_count[i] > 0)
             return false;
-        else if (this->wait_into_road_direction_count[i] < 0) {
+        else if (this->wait_into_road_direction_count[i] < 0 || this->wait_into_road_direction_count[i] > 1) {
             cout << "road id = " << this->id << " from = " << this->from << " to = " << this->to << endl;
             cout << "road::check_direct_priority error !!!!!!!!!!!!!!!!!!" << endl;
         }
@@ -263,8 +266,10 @@ int road::car_into_road(car into_car) {
         return -1;
     int car_dis_to_cross = this->length - dis_move_in_road;
     if (this->cars_in_road[this->into_channel_id].empty() || (car_dis_to_cross > this->cars_in_road[this->into_channel_id].back().get_dis_to_cross())) {
-        if (into_car.get_next_road_in_path() == -1)
+        if (into_car.get_next_road_in_path() == -1) {
+            cout << "road::car_into_road error!!!!!!!!!!!!!!!!!!!" << endl;
             return 1;
+        }
         // don't be block
         // update car state
         into_car.arrive_next_road_path();
@@ -275,8 +280,10 @@ int road::car_into_road(car into_car) {
         return 1;
     } else {
         if (this->cars_in_road[this->into_channel_id].back().get_schedule_status() == 0) {
-            if (into_car.get_next_road_in_path() == -1)
+            if (into_car.get_next_road_in_path() == -1) {
+                cout << "road::car_into_road error!!!!!!!!!!!!!!!!!!!" << endl;
                 return 1;
+            }
             // block by a car which is termination status
             // update car state
             into_car.arrive_next_road_path();
