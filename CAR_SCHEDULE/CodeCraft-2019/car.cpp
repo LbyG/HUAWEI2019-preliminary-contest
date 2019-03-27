@@ -20,6 +20,8 @@ car::car(string car_info) {
     this->to = info_val[2];
     this->speed = info_val[3];
     this->plan_time = info_val[4];
+    if (this->from == this->to)
+        cout << "car::car error !!!!!!!!!!!!!" << this->id << endl;
     
     // schedule_status == 0 termination state; schedule_status == 1 wait state;
     this->schedule_status = 0; 

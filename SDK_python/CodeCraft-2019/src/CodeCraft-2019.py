@@ -23,7 +23,7 @@ path_random_choose_index = 0
 # cars max running time
 CAR_RUNNING_TIME_LENGTH = 2000
 # road["capacity"] = road["channel"] * max(1, road["length"] - road["speed"]) * CAPACITY_WEIGHT // 1
-CAPACITY_WEIGHT = 0.5
+CAPACITY_WEIGHT = 0.8
 # Divide vehicles into epoch-making batches for departure arrangements
 epoch = 1
 # True: ratio = capacity / capacity_sum, False: ratio = 1 / capacity_sum
@@ -482,8 +482,8 @@ def traffic_regulation(cars, crosses, roads, cross_with_to_road, cross_with_from
                 path_road_through_time = [0]
                 cross_id = car["from"]
                 cross_arrive_time = start_time
-                #ifFindPath = dfs_random_find_path_by_dis(car, cross_id, cross_arrive_time, path_cross_id, path_road_id, path_road_through_time, crosses, roads, cross_with_from_road, road_car_situation, cross_arrive_state, cross_with_optional_road, congestion_statistics, -100)
-                ifFindPath = find_shortest_path_with_road_situation(car, cross_with_from_road, start_time, path_cross_id, path_road_id, path_road_through_time, road_car_situation, roads)
+                ifFindPath = dfs_random_find_path_by_dis(car, cross_id, cross_arrive_time, path_cross_id, path_road_id, path_road_through_time, crosses, roads, cross_with_from_road, road_car_situation, cross_arrive_state, cross_with_optional_road, congestion_statistics, -100)
+                #ifFindPath = find_shortest_path_with_road_situation(car, cross_with_from_road, start_time, path_cross_id, path_road_id, path_road_through_time, road_car_situation, roads)
                 if not ifFindPath:
                     continue
                 update_road_car_situation(road_car_situation, start_time, path_cross_id, path_road_id, path_road_through_time)
@@ -509,6 +509,7 @@ def traffic_regulation(cars, crosses, roads, cross_with_to_road, cross_with_from
     return ans
 
 def write_ans(ans, answer_path):
+    ans.sort(key = lambda x:x["carId"])
     with open(answer_path,'w') as w_file:
         for car_path_info in ans:
             path_str = ",".join([str(car_path_info["carId"])] + [str(car_path_info["startTime"])] + [str(val) for val in car_path_info["path"]])

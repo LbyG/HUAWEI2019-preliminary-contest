@@ -275,6 +275,9 @@ int road::car_into_road(car into_car) {
         into_car.arrive_next_road_path();
         into_car.set_schedule_status(0);
         into_car.set_dis_to_cross(car_dis_to_cross);
+        if (into_car.get_dis_to_cross() >= this->length) {
+            cout << "road::car_into_road error!!!!!!!!!!!!!!!!" << endl;
+        }
         into_car.set_channel_id(this->into_channel_id);
         this->cars_in_road[this->into_channel_id].push_back(into_car);
         return 1;
@@ -289,6 +292,9 @@ int road::car_into_road(car into_car) {
             into_car.arrive_next_road_path();
             into_car.set_schedule_status(0);
             into_car.set_dis_to_cross(this->cars_in_road[this->into_channel_id].back().get_dis_to_cross() + 1);
+            if (into_car.get_dis_to_cross() >= this->length) {
+                cout << "road::car_into_road error!!!!!!!!!!!!!!!!" << endl;
+            }
             into_car.set_channel_id(this->into_channel_id);
             this->cars_in_road[this->into_channel_id].push_back(into_car);
             return 1;
@@ -297,6 +303,7 @@ int road::car_into_road(car into_car) {
             return 0;
         }
     }
+    cout << "road::car_into_road error!!!!!!!!!!!!!!!!" << endl;
     return 0;
 }
 
