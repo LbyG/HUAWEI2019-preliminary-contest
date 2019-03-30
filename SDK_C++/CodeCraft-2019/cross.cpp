@@ -61,6 +61,11 @@ void cross::add_road_departure_cross(int road_id, road* road_pointer) {
     this->roads_departure_cross[road_id] = road_pointer;
 }
 
+// return roads_departure_cross
+map<int, road*> cross::get_roads_departure_cross() {
+    return this->roads_departure_cross;
+}
+
 // update road state in cross
 // if for a road have 1 straight, 1 left then road.wait_into_road_direction_count = [1, 1, 0]
 void cross::update_road_state_in_cross(road* road_pointer) {

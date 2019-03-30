@@ -36,7 +36,8 @@ public:
     void add_road_into_cross(road* road_pointer);
     // add road* to road_departure_cross which road->from == cross_id
     void add_road_departure_cross(int road_id, road* road_pointer);
-    // sort roads_into_cross by road_id;
+    // return roads_departure_cross
+    map<int, road*> get_roads_departure_cross();
     
     // update road state in cross
     void update_road_state_in_cross(road* road_pointer);

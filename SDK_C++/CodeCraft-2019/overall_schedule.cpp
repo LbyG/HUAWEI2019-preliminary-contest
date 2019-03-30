@@ -21,12 +21,14 @@ void overall_schedule::load_cars_roads_crosses(string car_path, string road_path
     this->cars.clear();
     ifstream cars_info_file(car_path);
     string car_info;
+    this->cars_n = 0;
     if (cars_info_file)
     {
         while (getline(cars_info_file, car_info)) {
             if (car_info.size() > 0 && car_info[0] != '#') {
                 car new_car = car(car_info);
                 this->cars[new_car.get_id()] = new_car;
+                this->cars_n ++;
             }
         }
     }
@@ -36,12 +38,14 @@ void overall_schedule::load_cars_roads_crosses(string car_path, string road_path
     this->roads.clear();
     ifstream roads_info_file(road_path);
     string road_info;
+    this->roads_n;
     if (roads_info_file)
     {
         while (getline(roads_info_file, road_info)) {
             if (road_info.size() > 0 && road_info[0] != '#') {
                 road new_road = road(road_info);
                 this->roads[new_road.get_id()] = new_road;
+                this->roads_n ++;
             }
         }
     }
@@ -51,12 +55,14 @@ void overall_schedule::load_cars_roads_crosses(string car_path, string road_path
     this->crosses.clear();
     ifstream crosses_info_file(cross_path);
     string cross_info;
+    this->crosses_n = 0;
     if (crosses_info_file)
     {
         while (getline(crosses_info_file, cross_info)) {
             if (cross_info.size() > 0 && cross_info[0] != '#') {
                 cross new_cross = cross(cross_info);
                 this->crosses[new_cross.get_id()] = new_cross;
+                this->crosses_n ++;
             }
         }
     }
@@ -242,4 +248,97 @@ void overall_schedule::output_schedule_status() {
             iter->output_status();
     }
     cout << "=====================================" << endl;
+}
+
+//================================================================
+    
+// regulate all cars start time and path
+void overall_schedule::car_path_regulation() {
+    
+    this->cars_to_regulate_path.clear();
+    for (map<int, car>::iterator iter = this->cars.begin(); iter != this->cars.end(); iter ++) {
+        car new_car(iter->second);
+        new_car.set_schedule_start_time(new_car.get_plan_time());
+        this->cars_to_regulate_path.push_back(new_car);
+    }
+    sort(this->cars_to_regulate_path.begin(), this->cars_to_regulate_path.end());
+    int count = 0;
+    priority_queue<int,vector<int>,greater<int>> arrive_time_queue;
+    for (vector<car>::iterator car_iter = this->cars_to_regulate_path.begin(); car_iter != this->cars_to_regulate_path.end(); car_iter ++) {
+        map<int, int> cross_arrive_time;
+        map<int, bool> updata_flag;
+        map<int, int> updata_from;
+        map<int, int> updata_road_id;
+        typedef pair<int, int> QueueItem;
+        priority_queue <QueueItem, std::vector<QueueItem>, std::greater<QueueItem> > cross_arrive_time_queue;
+        for (map<int, cross>::iterator cross_iter = this->crosses.begin(); cross_iter != this->crosses.end(); cross_iter ++) {
+            cross_arrive_time[cross_iter->first] = 1e6;
+            updata_flag[cross_iter->first] = false;
+            updata_from[cross_iter->first] = cross_iter->first;
+            updata_road_id[cross_iter->first] = 0;
+        }
+        if (count < 800)
+            cross_arrive_time[car_iter->get_from()] = car_iter->get_plan_time();
+        else {
+            cross_arrive_time[car_iter->get_from()] = max(car_iter->get_plan_time(), arrive_time_queue.top());
+            arrive_time_queue.pop();
+        }
+        cross_arrive_time_queue.push(pair<int, int>(cross_arrive_time[car_iter->get_from()], car_iter->get_from()));
+        while (true) {
+            int updata_cross_id = -1;
+            int updata_cross_time = 1e6;
+            while (!cross_arrive_time_queue.empty()) {
+                if (!updata_flag[cross_arrive_time_queue.top().second]) {
+                    updata_cross_time = cross_arrive_time_queue.top().first;
+                    updata_cross_id = cross_arrive_time_queue.top().second;
+                    cross_arrive_time_queue.pop();
+                    break;
+                }
+                cross_arrive_time_queue.pop();
+            }
+            if (updata_cross_id == -1)
+                break;
+            updata_flag[updata_cross_id] = true;
+            map<int, road*> roads_departure_cross = this->crosses[updata_cross_id].get_roads_departure_cross();
+            for (map<int, road*>::iterator road_iter = roads_departure_cross.begin(); road_iter != roads_departure_cross.end(); road_iter ++) {
+                int speed = min(car_iter->get_speed(), (road_iter->second)->get_speed());
+                int length = (road_iter->second)->get_length();
+                int through_time = (length + speed - 1) / speed;
+                int next_cross_id = (road_iter->second)->get_to();
+                if (cross_arrive_time[next_cross_id] > updata_cross_time + through_time) {
+                    cross_arrive_time[next_cross_id] = updata_cross_time + through_time;
+                    updata_from[next_cross_id] = updata_cross_id;
+                    updata_road_id[next_cross_id] = (road_iter->second)->get_id();
+                    cross_arrive_time_queue.push(pair<int, int>(cross_arrive_time[next_cross_id], next_cross_id));
+                }
+            }
+        }
+        if (cross_arrive_time[car_iter->get_to()] == 1e6) {
+            cout << "overall_schedule::car_path_regulation error!!!!!!!!!!!!!!!!!" << endl;
+        }
+        vector<int> schedule_path;
+        schedule_path.clear();
+        int cross_id = car_iter->get_to();
+        while (cross_id != car_iter->get_from()) {
+            schedule_path.push_back(updata_road_id[cross_id]);
+            cross_id = updata_from[cross_id];
+        }
+        vector<int> schedule_info;
+        schedule_info.push_back(car_iter->get_id());
+        schedule_info.push_back(cross_arrive_time[car_iter->get_to()]);
+        for (vector<int>::reverse_iterator riter = schedule_path.rbegin();riter!=schedule_path.rend();riter++)
+            schedule_info.push_back(*riter);
+        car_iter->set_schedule_path(schedule_info);
+        arrive_time_queue.push(cross_arrive_time[car_iter->get_to()]);
+        count ++;
+    }
+}
+    
+// write answer to answer file
+void overall_schedule::save_answer(string answer_path) {
+    ofstream answer_info_file(answer_path);
+    for (vector<car>::iterator car_iter = this->cars_to_regulate_path.begin(); car_iter != this->cars_to_regulate_path.end(); car_iter ++) {
+        answer_info_file << car_iter->to_string() << endl;
+    }
+    answer_info_file.close();
 }

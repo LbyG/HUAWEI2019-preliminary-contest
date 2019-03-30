@@ -41,6 +41,13 @@ int road::get_id() const {
     return this->id;
 }
 
+int road::get_length() const {
+    return this->length;
+}
+int road::get_speed() const {
+    return this->speed;
+}
+
 // return road from cross id
 int road::get_from() const {
     return this->from;

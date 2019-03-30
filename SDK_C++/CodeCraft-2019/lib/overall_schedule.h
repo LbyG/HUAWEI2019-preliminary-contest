@@ -39,10 +39,14 @@ private:
     
     // cars[car.id] = car
     map<int, car> cars; 
+    vector<car> cars_to_regulate_path;
+    int cars_n;
     // roads[road.id] = road
-    map<int, road> roads; 
+    map<int, road> roads;
+    int roads_n;
     // crosses[cross.id] = cross
     map<int, cross> crosses;
+    int crosses_n;
     // vector of roads connect to cross
     list<road> roads_connect_cross;
 public:
@@ -75,6 +79,14 @@ public:
     
     // output car schedule status
     void output_schedule_status();
+    
+    //================================================================
+    
+    // regulate all cars start time and path
+    void car_path_regulation();
+    
+    // write answer to answer file
+    void save_answer(string answer_path);
 };
 
 #endif

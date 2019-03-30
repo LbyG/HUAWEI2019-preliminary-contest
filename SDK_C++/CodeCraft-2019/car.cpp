@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 
 using namespace std;
 
@@ -65,6 +67,10 @@ int car::get_plan_time() const {
     return this->plan_time;
 }
 
+void car::set_schedule_start_time(int schedule_start_time) {
+    this->schedule_start_time = schedule_start_time;
+}
+
 // return car schedule start time
 int car::get_schedule_start_time() const {
     return this->schedule_start_time;
@@ -111,6 +117,25 @@ void car::set_channel_id(int channel_id) {
 // return channel id which car running in
 int car::get_channel_id() const {
     return this->channel_id;
+}
+
+string car::to_string() {
+    string ans;
+    stringstream ss;
+    ss << "(";
+    ss << this->id;
+    ss << ",";
+    ss << this->schedule_start_time;
+    //ans = ans + "(" + to_string(this->id) + "," + to_string(this->schedule_start_time);
+    for (list<int>::iterator iter = this->schedule_path.begin(); iter != this->schedule_path.end(); iter ++) {
+        //ans = ans + "," + to_string(*iter);
+        ss << ",";
+        ss << *iter;
+    }
+    ss << ")";
+    ss >> ans;
+//    cout << ans << endl;
+    return ans;
 }
 
 // Overload < for road by id

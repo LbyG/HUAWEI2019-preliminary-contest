@@ -4,6 +4,7 @@
 #include <string>
 #include <list>
 #include <vector>
+#include <fstream>
 
 using namespace std;
 
@@ -48,6 +49,7 @@ public:
     // return car plan start time
     int get_plan_time() const; 
     
+    void set_schedule_start_time(int schedule_start_time);
     // return car schedule start time
     int get_schedule_start_time() const;
     // return next road_id in path, if path is empty return -1
@@ -67,6 +69,8 @@ public:
     void set_channel_id(int channel_id);
     // return channel id which car running in
     int get_channel_id() const;
+    
+    string to_string();
 };
 
 bool operator<(const car &a, const car &b);

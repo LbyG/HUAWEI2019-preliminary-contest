@@ -25,6 +25,10 @@ vector
 -
 iostream
 -
+fstream
+-
+sstream
+-
 
 /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/cmp_car_dis_to_cross_and_channel_id.cpp
 cmp_car_dis_to_cross_and_channel_id.h
@@ -64,6 +68,8 @@ string
 list
 -
 vector
+-
+fstream
 -
 
 /home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/SDK_C++/CodeCraft-2019/lib/cmp_car_dis_to_cross_and_channel_id.h

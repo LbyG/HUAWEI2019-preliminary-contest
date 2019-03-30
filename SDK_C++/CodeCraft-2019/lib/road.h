@@ -40,6 +40,8 @@ public:
     // road_info = (id,length,speed,channel,from,to,isDuplex)
     road(string road_info);
     int get_id() const; // return road id
+    int get_length() const;
+    int get_speed() const;
     int get_from() const; // return road from cross id
     int get_to() const; // return road to cross id
     int get_is_duplex() const; // return is_duplex

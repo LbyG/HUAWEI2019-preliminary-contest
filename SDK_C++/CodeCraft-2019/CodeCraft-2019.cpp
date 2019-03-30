@@ -28,21 +28,9 @@ int main(int argc, char *argv[])
     overall_schedule OS;
     OS.load_cars_roads_crosses(carPath, roadPath, crossPath);
 	// TODO:process
-    OS.load_answer(answerPath);
-    int T = OS.schedule_cars();
-    std::cout << "T = " << T << std::endl;
+    OS.car_path_regulation();
 	// TODO:write output file
-    list<int> v1;
-    v1.push_back(1);
-    list<int> v2 = v1;
-    v1.push_back(2);
-    v2.push_back(3);
-    for (list<int>::iterator iter = v1.begin(); iter != v1.end(); iter ++)
-        cout << *iter << " ";
-    cout << endl;
-    for (list<int>::iterator iter = v2.begin(); iter != v2.end(); iter ++)
-        cout << *iter << " ";
-    cout << endl;
-	
+    OS.save_answer(answerPath);
+    
 	return 0;
 }
