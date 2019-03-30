@@ -34,6 +34,10 @@ road::road(string road_info) {
     for (int i = 0; i < channel; i ++) {
         this->cars_in_road.push_back(list<car>());
     }
+    
+    this->situation_car_running_in_road = vector<int>(10000, 0);
+    //road["channel"] * max(1, road["length"] - road["speed"]) * CAPACITY_WEIGHT // 1
+    this->capacity = this->channel * max(1, this->length - this->speed) * 3 / 10;
 }
 
 // return road id
@@ -309,6 +313,22 @@ void road::output_status() {
             cout << "(" << iter->get_id() << "," << iter->get_schedule_status() << "," << iter->get_dis_to_cross() << ")";
         }
         cout << endl;
+    }
+}
+
+//===============================================
+
+bool road::check_capacity(int x, int y) {
+    for (int i = x; i <= y; i ++) {
+        if (this->situation_car_running_in_road[i] > this->capacity)
+            return false;
+    }
+    return true;
+}
+
+void road::car_running_count(int x, int y) {
+    for (int i = x; i <= y; i ++) {
+        this->situation_car_running_in_road[i] ++;
     }
 }
 

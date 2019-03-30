@@ -35,6 +35,9 @@ private:
     // channel_id = [0, channel-1]
     // list<car> = car1->car2->car3->car4, ... the distance from the arrive_cross_id is from near to far
     vector<list<car>> cars_in_road;
+    
+    vector<int> situation_car_running_in_road;
+    int capacity;
 public:
     road();
     // road_info = (id,length,speed,channel,from,to,isDuplex)
@@ -95,6 +98,11 @@ public:
     
     // output road status
     void output_status();
+    
+    //========================================================================
+    
+    bool check_capacity(int x, int y);
+    void car_running_count(int x, int y);
 };
 
 bool operator<(const road &a, const road &b);
