@@ -124,13 +124,6 @@ int car::get_channel_id() const {
 
 // Overload < for road by id
 bool operator<(const car &a, const car &b) {
-    /*
-    if (a.get_plan_time() == b.get_plan_time())
-        return a.get_id() < b.get_id();
-    else
-        return a.get_plan_time() < b.get_plan_time();
-        */
-    
     if (a.get_schedule_start_time() == b.get_schedule_start_time())
         return a.get_id() < b.get_id();
     else

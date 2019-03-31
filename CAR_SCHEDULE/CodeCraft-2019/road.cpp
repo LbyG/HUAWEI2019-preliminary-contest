@@ -5,13 +5,7 @@
 #include <iostream>
 
 using namespace std;
-/*
-road::road() {
-    // TODO
-    cout << "road??????????????" << endl;
-    this->id = 0;
-}
-*/
+
 road::road(string road_info) {
     // road_info = (id,length,speed,channel,from,to,isDuplex)
     vector<int> info_val = parse_string_to_int_vector(road_info);
@@ -71,16 +65,6 @@ void road::swap_from_to() {
     this->to = tmp;
 }
 
-// if through road can arrive cross_id, if cross_id == to || (cross_id == from && isDuplex == 1) return true else return false
-bool road::ifArriveCross(int cross_id) {
-    if (cross_id == this->to)
-        return true;
-    else if (this->is_duplex == 1 && cross_id == this->from)
-        return true;
-    else
-        return false;
-}
-
 // set.into_channel_id = into_channel_id
 void road::set_into_channel_id(int into_channel_id) {
     this->into_channel_id = into_channel_id;
@@ -103,17 +87,6 @@ bool road::if_no_car_through_cross() {
 
 // get car which have priority through cross, wait_car_forefront_of_each_channel
 car road::get_car_priority_through_cross() {
-    /*
-    if (this->id == 5074) {
-        if (!this->wait_car_forefront_of_each_channel.empty()) {
-            car tmp_car = this->wait_car_forefront_of_each_channel.top();
-            cout << "id = " << tmp_car.get_id() << endl;
-            cout << "dis_to_cross = " << tmp_car.get_dis_to_cross() << endl;
-            cout << "channel_id = " << tmp_car.get_channel_id() << endl;
-            cout << "speed = " << tmp_car.get_speed() << ")" << endl;
-        }
-    }
-    */
     return this->wait_car_forefront_of_each_channel.top();
 }
 
@@ -171,30 +144,6 @@ int road::schedule_cars_running_in_channel(int channel_id, int flag, int &cars_r
     int cars_running_termination_status_n = 0;
     
     // car arrive destination direct drive to destination
-    /*
-    if (flag == 0)
-    while (!this->cars_in_road[channel_id].empty()) {
-        list<car>::iterator iter = this->cars_in_road[channel_id].begin();
-        int car_dis_to_cross = iter->get_dis_to_cross();
-        int speed_car_in_road = min(this->speed, iter->get_speed());
-        if (iter->get_schedule_status() == 1) {
-            if (iter->get_next_road_in_path() == -1) {
-                if (car_dis_to_cross < speed_car_in_road) {
-                    cout << "??????????????????" << endl;
-                    this->cars_in_road[channel_id].pop_front();
-                    cars_running_termination_status_n ++;
-                    cars_running_n --;
-                    cars_arrive_destination_n ++;
-                    all_cars_running_time --;
-                    cars_arrive_destination_n ++;
-                    all_cars_running_time += T - iter->get_plan_time();
-                    continue;
-                }
-            }
-        }
-        break;
-    }
-    */
     if (this->cars_in_road[channel_id].empty())
         return cars_running_termination_status_n;
     list<car>::iterator iter = this->cars_in_road[channel_id].begin();
@@ -211,13 +160,6 @@ int road::schedule_cars_running_in_channel(int channel_id, int flag, int &cars_r
             cars_running_termination_status_n ++;
         } else {
             // forefront car can through cross -> to wait state
-            /*
-            if (this->id == 5074) {
-                this->output_status();
-                //cout << "car into car forefront of each channel " << iter->get_id() << endl;
-                //cout << car_dis_to_cross << " " << speed_car_in_road << " " << iter->get_schedule_status() << endl;
-            }
-            */
             this->wait_car_forefront_of_each_channel.push(*iter);
             iter->set_schedule_status(1);
         }
@@ -284,7 +226,6 @@ int road::forefront_car_remain_in_cross(int channel_id, int flag, int &cars_runn
 bool road::whether_be_fill_up() {
     if (this->into_channel_id == this->channel)
         return true;
-    // if into_channel_id channel no space to enter, and last car in channel is termination status, try next channel
     while (!this->cars_in_road[this->into_channel_id].empty() && this->cars_in_road[this->into_channel_id].back().get_dis_to_cross() == (this->length - 1) && this->cars_in_road[this->into_channel_id].back().get_schedule_status() == 0) {
         this->into_channel_id ++;
         if (this->into_channel_id == this->channel)
@@ -298,7 +239,6 @@ bool road::whether_be_fill_up() {
 // else if car into road don't be block or block by a car which is termination status, car enter road, return 1
 // else car can't enter road, need wait previous car to be termination state return 0
 int road::car_into_road(car into_car, int flag) {
-    // TODO
     int speed_car_in_road = min(this->speed, into_car.get_speed());
     int dis_move_in_road = speed_car_in_road - into_car.get_dis_to_cross();
     if (dis_move_in_road <= 0)
@@ -352,19 +292,15 @@ int road::car_into_road(car into_car, int flag) {
 
 // output road status
 void road::output_status(int T) {
-    //if (this->to == 27 || (this->from == 27 && this->to == 19)) 
-    {
-    //cout << "road id = " << this->id << " from = " << this->from << " to = " << this->to << " length = " << this->length << " speed = " << this->speed << endl;
+    cout << "road id = " << this->id << " from = " << this->from << " to = " << this->to << " length = " << this->length << " speed = " << this->speed << endl;
     for (int i = 0; i < this->channel; i ++) {
         if (this->cars_in_road[i].size() > 0) {
-            //cout << "   channel id = " << i << ":";
+            cout << "   channel id = " << i << ":";
             for (list<car>::iterator iter = this->cars_in_road[i].begin(); iter != this->cars_in_road[i].end(); iter ++) {
-                if (iter->get_id()==16566)
                 cout << T << "(" << iter->get_id() << "," << iter->get_channel_id() << "," << iter->get_dis_to_cross() << "," << iter->get_speed() << "," << this->id << ")";
            }
-            //cout << endl;
+            cout << endl;
         }
-    }
     }
 }
 

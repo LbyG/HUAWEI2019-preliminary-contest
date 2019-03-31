@@ -44,8 +44,6 @@ public:
     int get_is_duplex() const; // return is_duplex
     // swap from and to
     void swap_from_to();
-    // if through road can arrive cross_id, if cross_id == to || (cross_id == from && isDuplex == 1) return true else return false
-    bool ifArriveCross(int cross_id);
     
     // set.into_channel_id = into_channel_id
     void set_into_channel_id(int into_channel_id);
