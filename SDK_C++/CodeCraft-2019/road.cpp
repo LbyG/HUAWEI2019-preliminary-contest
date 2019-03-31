@@ -99,6 +99,17 @@ void road::clear_wait_car_forefront_of_each_channel() {
     clear_priority_queue(this->wait_car_forefront_of_each_channel);
 }
 
+void road::init_situation_car_running_in_road() {
+    this->situation_car_running_in_road = vector<int>(10000, 0);
+}
+
+void road::init_cars_in_road() {
+    this->cars_in_road.clear();
+    for (int i = 0; i < channel; i ++) {
+        this->cars_in_road.push_back(list<car>());
+    }
+}
+
 // if no car need through cross in this road
 bool road::if_no_car_through_cross() {
     return this->wait_car_forefront_of_each_channel.empty();
@@ -326,9 +337,10 @@ bool road::check_capacity(int x, int y) {
     return true;
 }
 
-void road::car_running_count(int x, int y) {
-    for (int i = x; i <= y; i ++) {
-        this->situation_car_running_in_road[i] ++;
+void road::count_cars_running_in_road(int T) {
+    this->situation_car_running_in_road[T] = 0;
+    for (int i = 0; i < this->channel; i ++) {
+        this->situation_car_running_in_road[T] += this->cars_in_road[i].size();
     }
 }
 

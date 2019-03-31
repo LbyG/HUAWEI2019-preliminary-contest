@@ -32,7 +32,7 @@ private:
     // channel id which car running in
     int channel_id;
 public:
-    car();
+    //car();
     // car_info = (id,from,to,speed,planTime)
     car(string car_info); 
     // schedule_info = [id, schedule_start_time, schedule_path1, schedule_path2, schedule_path3, schedule_path4, ...]
@@ -48,6 +48,7 @@ public:
     // return car plan start time
     int get_plan_time() const; 
     
+    void set_schedule_start_time(int time);
     // return car schedule start time
     int get_schedule_start_time() const;
     // return next road_id in path, if path is empty return -1

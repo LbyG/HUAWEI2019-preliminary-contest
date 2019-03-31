@@ -3,6 +3,8 @@
 #include "overall_schedule.h"
 #include "util.h"
 
+#include <time.h>
+
 using namespace std;
 
 int main(int argc, char *argv[])
@@ -29,7 +31,12 @@ int main(int argc, char *argv[])
     OS.load_cars_roads_crosses(carPath, roadPath, crossPath);
 	// TODO:process
     OS.load_answer(answerPath);
+    double start,end,cost;
+    start=clock();
     int T = OS.schedule_cars();
+    end=clock();
+    cost=end-start;
+    cout << double(cost)/CLOCKS_PER_SEC << endl;
     std::cout << "T = " << T << std::endl;
 	// TODO:write output file
     list<int> v1;

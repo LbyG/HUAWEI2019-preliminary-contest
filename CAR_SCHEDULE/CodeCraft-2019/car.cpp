@@ -5,16 +5,19 @@
 #include <iostream>
 
 using namespace std;
-
+/*
 car::car() {
     // TODO
     this->id = 0;
 }
-
+*/
 // car_info = (id,from,to,speed,planTime)
 car::car(string car_info) {
     // car_info = (id,from,to,speed,planTime)
     vector<int> info_val = parse_string_to_int_vector(car_info);
+    if (info_val.size() != 5) {
+        cout << "car::car" << endl;
+    }
     this->id = info_val[0];
     this->from = info_val[1];
     this->to = info_val[2];
@@ -65,6 +68,10 @@ int car::get_speed() const {
 // return car plan start time
 int car::get_plan_time() const {
     return this->plan_time;
+}
+
+void car::set_schedule_start_time(int time) {
+    this->schedule_start_time = time;
 }
 
 // return car schedule start time

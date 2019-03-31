@@ -109,11 +109,12 @@ void overall_schedule::initial_cars_state_in_T0() {
     this->T = 0;
     this->all_cars_running_time = 0;
     // number of cars which T < car.schedule_start_time
-    this->cars_wait_schedule_start_time_n = this->get_cars_n(); 
+    this->cars_wait_schedule_start_time_n = 0; 
     // cars which T < car.schedule_start_time, priority depend on schedule_start_time
     clear_priority_queue(this->cars_wait_schedule_start_time_list); 
-    for (map<int, car>::iterator iter = this->cars.begin(); iter != this->cars.end(); ++iter) {
-        this->cars_wait_schedule_start_time_list.push(iter->second);
+    for (vector<car>::iterator iter = this->cars_is_running_vec.begin(); iter != this->cars_is_running_vec.end(); ++iter) {
+        this->cars_wait_schedule_start_time_n ++;
+        this->cars_wait_schedule_start_time_list.push(*iter);
     }
     // the number of cars which T >= car.schedule_start_time but wait to running in road
     this->cars_wait_run_n = 0; 
@@ -128,6 +129,14 @@ void overall_schedule::initial_cars_state_in_T0() {
     this->cars_running_wait_state_n = 0; 
     // the number of cars was run in this time unit
     this->cars_running_termination_state_n = 0;
+    
+    for (list<road>::iterator iter = this->roads_connect_cross.begin(); iter != this->roads_connect_cross.end(); iter ++) {
+        iter->set_into_channel_id(0);
+        iter->init_wait_into_road_direction_count();
+        iter->clear_wait_car_forefront_of_each_channel();
+        iter->init_situation_car_running_in_road();
+        iter->init_cars_in_road();
+    }
 }
 
 // Schedule cars in road.
@@ -140,6 +149,7 @@ void overall_schedule::schedule_cars_running_in_road() {
     this->cars_running_wait_state_n = 0;
     for (list<road>::iterator iter = this->roads_connect_cross.begin(); iter != this->roads_connect_cross.end(); iter ++) {
         // schedule cars in road
+        iter->count_cars_running_in_road(this->T);
         this->cars_running_wait_state_n += iter->schedule_cars_running_in_road();
     }
     // update roads' state
@@ -223,12 +233,13 @@ int overall_schedule::schedule_cars() {
         }
         this->T ++;
     }
-    cout << "all cars running time = " << this->all_cars_running_time << endl;
+    cout << "T = " << this->T << " all cars running time = " << this->all_cars_running_time << endl;
     return this->T;
 }
 
 // output car schedule status
 void overall_schedule::output_schedule_status() {
+    return;
     cout << "========show schedule status=========" << endl;
     cout << "T = " << this->T << endl;
     cout << "cars_wait_schedule_start_time_n = " << this->cars_wait_schedule_start_time_n << endl;
@@ -254,7 +265,7 @@ void overall_schedule::output_schedule_status() {
     
 // regulate all cars start time and path
 void overall_schedule::car_path_regulation() {
-    
+    this->cars_is_running_vec.clear();
     this->cars_to_regulate_path.clear();
     for (map<int, car>::iterator iter = this->cars.begin(); iter != this->cars.end(); iter ++) {
         car new_car(iter->second);
@@ -266,7 +277,6 @@ void overall_schedule::car_path_regulation() {
     int start_time = 0;
     for (vector<car>::iterator car_iter = this->cars_to_regulate_path.begin(); car_iter != this->cars_to_regulate_path.end(); car_iter ++) {
         start_time = max(0, start_time - 50);
-        cout << "count = " << count << " start_time = " << start_time << endl;
         while (true) {
             map<int, int> cross_arrive_time;
             map<int, bool> updata_flag;
@@ -314,7 +324,7 @@ void overall_schedule::car_path_regulation() {
                 }
             }
             if (cross_arrive_time[car_iter->get_to()] == 1e6) {
-                start_time += 1;
+                start_time += 10;
                 continue;
                 //cout << "overall_schedule::car_path_regulation error!!!!!!!!!!!!!!!!!" << endl;
             }
@@ -328,7 +338,6 @@ void overall_schedule::car_path_regulation() {
                 cross_id = updata_from[cross_id];
                 map<int, road*> roads_departure_cross = this->crosses[cross_id].get_roads_departure_cross();
                 int now_cross_arrive_time = cross_arrive_time[cross_id];
-                roads_departure_cross[road_id]->car_running_count(now_cross_arrive_time, next_cross_arrive_time - 1);
             }
             vector<int> schedule_info;
             schedule_info.push_back(car_iter->get_id());
@@ -336,9 +345,17 @@ void overall_schedule::car_path_regulation() {
             for (vector<int>::reverse_iterator riter = schedule_path.rbegin();riter!=schedule_path.rend();riter++)
                 schedule_info.push_back(*riter);
             car_iter->set_schedule_path(schedule_info);
+            this->cars_is_running_vec.push_back(*car_iter);
+            int T = this->schedule_cars();
+            if (T < 0) {
+                start_time += 10;
+                this->cars_is_running_vec.pop_back();
+                continue;
+            }
             count ++;
             break;
         }
+        cout << "count = " << count << " start_time = " << start_time << endl;
     }
 }
     

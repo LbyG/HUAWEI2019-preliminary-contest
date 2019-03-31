@@ -59,6 +59,8 @@ public:
     void init_wait_into_road_direction_count();
     // road.wait_car_forefront_of_each_channel.clear();
     void clear_wait_car_forefront_of_each_channel();
+    void init_situation_car_running_in_road();
+    void init_cars_in_road();
     
     // if no car need through cross in this road
     bool if_no_car_through_cross();
@@ -102,7 +104,7 @@ public:
     //========================================================================
     
     bool check_capacity(int x, int y);
-    void car_running_count(int x, int y);
+    void count_cars_running_in_road(int T);
 };
 
 bool operator<(const road &a, const road &b);

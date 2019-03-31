@@ -21,7 +21,7 @@ private:
     // road_departure_cross[road_id] -> road which id == road_id and from this cross to other cross
     map<int, road*> roads_departure_cross;
 public:
-    cross();
+    //cross();
     // convert cross_info = (id,roadId1,roadId2,roadId3,roadId4) - > 
     // turn_direct[roadId1][roadId2] = 1     turn left 
     // turn_direct[roadId1][roadId3] = 0     straight
@@ -52,6 +52,8 @@ public:
     // schedule cars can through cross
     // return number of cars from wait status to termination status in this schedule
     int schedule_cars_in_cross(int &cars_running_n, int &cars_arrive_destination_n, int &all_cars_running_time, int T, map<int, int> &arrive_car_id_count);
+    
+    void show_car_next_road_status(car car_wait_run);
 };
 
 #endif

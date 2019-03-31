@@ -36,7 +36,6 @@ private:
     // list<car> = car1->car2->car3->car4, ... the distance from the arrive_cross_id is from near to far
     vector<list<car>> cars_in_road;
 public:
-    road();
     // road_info = (id,length,speed,channel,from,to,isDuplex)
     road(string road_info);
     int get_id() const; // return road id
@@ -78,10 +77,10 @@ public:
     // If car don't be block and can't through cross then car run one time slice and into end state -> car.schedule_status = 0
     // If car blocked by termination state car then car move to the back of the previous car -> car.schedule_status = 0
     // return number of from wait state to termination status
-    int schedule_cars_running_in_channel(int channel_id);
-    int schedule_cars_running_in_road();
+    int schedule_cars_running_in_channel(int channel_id, int flag, int &cars_running_n, int &cars_arrive_destination_n, int &all_cars_running_time, int T);
+    int schedule_cars_running_in_road(int &cars_running_n, int &cars_arrive_destination_n, int &all_cars_running_time, int T);
     // forefront car because some reason it need remain in cross
-    int forefront_car_remain_in_cross(int channel_id);
+    int forefront_car_remain_in_cross(int channel_id, int flag, int &cars_running_n, int &cars_arrive_destination_n, int &all_cars_running_time, int T);
     
     // check the road all channel whether be fill up
     // be fill up -> true else -> false
@@ -89,10 +88,10 @@ public:
     // if car speed_in_road <= car.dis_to_cross in previous road, then dis_move_in_road = 0 -> car don't enter this road, car.dis_to_cross = 0 and return -1 
     // else if car into road don't be block or block by a car which is termination status, car enter road, return 1
     // else car can't enter road, need wait previous car to be termination state return 0
-    int car_into_road(car into_car);
+    int car_into_road(car into_car, int flag);
     
     // output road status
-    void output_status();
+    void output_status(int T);
 };
 
 bool operator<(const road &a, const road &b);

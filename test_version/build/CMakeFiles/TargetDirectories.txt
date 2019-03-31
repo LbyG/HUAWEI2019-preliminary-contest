@@ -1,0 +1,3 @@
+/home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/test_version/build/CMakeFiles/rebuild_cache.dir
+/home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/test_version/build/CMakeFiles/CodeCraft-2019.dir
+/home/lbyg/Kaggle/HUAWEI2019/2019_first_SDK/HUWEI2019-preliminary-contest/test_version/build/CMakeFiles/edit_cache.dir

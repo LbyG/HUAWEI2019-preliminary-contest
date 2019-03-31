@@ -21,9 +21,9 @@ np.random.seed(2050)
 path_random_choose_index = 0
 #max_running_car_num = 500
 # cars max running time
-CAR_RUNNING_TIME_LENGTH = 2000
+CAR_RUNNING_TIME_LENGTH = 2500
 # road["capacity"] = road["channel"] * max(1, road["length"] - road["speed"]) * CAPACITY_WEIGHT // 1
-CAPACITY_WEIGHT = 0.8
+CAPACITY_WEIGHT = 0.5
 # Divide vehicles into epoch-making batches for departure arrangements
 epoch = 1
 # True: ratio = capacity / capacity_sum, False: ratio = 1 / capacity_sum
@@ -494,15 +494,15 @@ def traffic_regulation(cars, crosses, roads, cross_with_to_road, cross_with_from
             if start_time < 10 or wait_car_N < 500:
                 start_time += 1
             else:
-                start_time += 5
+                start_time += 20
             #for cross_id in congestion_statistics:
             #    print(cross_id, ":", congestion_statistics[cross_id], ", ")
             #print("\n")
             print("start time = ", start_time, "wait car N = ", wait_car_N, "max_run_time = ", max_run_time)
             print("start_car_index = ", start_car_index, " end_car_index = ", end_car_index)
         
-    for road_id in road_car_situation[20]:
-        road = roads[road_id]
+#    for road_id in road_car_situation[20]:
+#        road = roads[road_id]
 #        print("road = ", road)
 #        print("road_situation = ", np.max(road_car_situation[20][road_id]))
 #        print("road_capacity = ", road["capacity"])
@@ -516,6 +516,7 @@ def write_ans(ans, answer_path):
             w_file.write("(" + path_str + ")\n")
 
 def main():
+    print("???????????????")
     if len(sys.argv) != 5:
         logging.info('please input args: car_path, road_path, cross_path, answerPath')
         exit(1)
@@ -531,12 +532,17 @@ def main():
     logging.info("answer_path is %s" % (answer_path))
 
 # to read input file
+    print("???????????????")
     cars, car_attr = read_car_file(car_path)
+    print("???????????????")
     crosses, crossN = read_cross_file(cross_path)
+    print("???????????????")
     cross_with_to_road, cross_with_from_road, roads, road_attr = read_road_file(road_path, crosses, cars)
 # process
+    print("???????????????")
     ans = traffic_regulation(cars, crosses, roads, cross_with_to_road, cross_with_from_road)
 # to write output file
+    print("???????????????")
     write_ans(ans, answer_path)
 
 

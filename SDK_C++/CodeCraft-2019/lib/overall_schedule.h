@@ -39,7 +39,6 @@ private:
     
     // cars[car.id] = car
     map<int, car> cars; 
-    vector<car> cars_to_regulate_path;
     int cars_n;
     // roads[road.id] = road
     map<int, road> roads;
@@ -49,6 +48,10 @@ private:
     int crosses_n;
     // vector of roads connect to cross
     list<road> roads_connect_cross;
+    
+    //=================================================
+    vector<car> cars_to_regulate_path;
+    vector<car> cars_is_running_vec;
 public:
     // return cars number
     int get_cars_n();
